@@ -21,18 +21,24 @@ free(menuFont);
 #pragma once
 
 // change the last folder name below to your game folder name in the converted "res" folder
-#define PATH_PREFIX "\\fls0\\res\\bounce\\"
+#define PATH_PREFIX "\\fls0\\res\\hhkengine\\"
 
 #include <sdk/os/file.hpp>
 #include <sdk/os/mem.hpp>
 #include <sdk/os/string.hpp>
 #include "shaders.hpp"
+#include "calc.hpp"
 
 #define LOAD_TEXTURE_PTR(path, pointer) uint16_t *pointer = load_texture(path)
 #define LOAD_FONT_PTR(path, pointer) uint8_t *pointer = load_font(path)
 #define DRAW_TEXTURE(texturepointer, x, y) draw_texture_shader(texturepointer, x, y, 1, 0)
 #define DRAW_TEXTURE_FRAME(texturepointer, x, y, frame) draw_texture_shader(texturepointer, x, y, 2, frame)
 #define DRAW_FONT(fontpointer, text, x, y, color, wrapLength) draw_font_shader(fontpointer, text, x, y, color, wrapLength, 1, 0, 0)
+
+// start with zero assets loaded
+uint16_t memUsed = 0;
+uint16_t txLoaded = 0; //textures loaded
+uint16_t fLoaded = 0; //fonts loaded
 
 inline uint16_t uint8to16(uint8_t highByte, uint8_t lowByte) {
 	return (highByte << 8) | lowByte;
@@ -53,6 +59,8 @@ uint16_t *load_texture(const char *texturepath) {
 		uint16_t w = info[0];
 		uint16_t h = info[1];
 		uint16_t *result = (uint16_t*)malloc(w*h*2+4);
+		memUsed += (w*h*2)+4;
+		txLoaded += 1;
 		lseek(fd, 0, SEEK_SET);
 		read(fd, result, w*h*2+4);
 		close(fd);
@@ -88,6 +96,8 @@ uint8_t *load_font(const char *fontpath) {
 		uint16_t w = info[0];
 		uint16_t h = info[1];
 		uint8_t *result = (uint8_t*)malloc(95*w*h/8+5);
+		memUsed += (95*w*h/8)+5;
+		fLoaded += 1;
 		lseek(fd, 0, SEEK_SET);
 		read(fd, result, (95*w*h/8)+5);
 		close(fd);

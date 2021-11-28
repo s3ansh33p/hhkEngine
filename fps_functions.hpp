@@ -39,5 +39,5 @@ void fps_formatted_update() {
 }
 
 inline void fps_display() {
-	Debug_Printf(0,0,false,0,fps_formatted);
+	Debug_Printf(45,0,false,0,fps_formatted);
 }
