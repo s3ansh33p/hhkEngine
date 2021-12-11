@@ -3,6 +3,7 @@
 #include "calc.hpp"
 #include "draw_functions.hpp"
 #include "lib/debug.hpp"
+#include "lib/core/event_handler.hpp"
 
 #ifndef PC
 	APP_NAME("HHK Game Engine")
@@ -10,6 +11,16 @@
 	APP_AUTHOR("InterChan / s3ash33p")
 	APP_VERSION("0.0.1")
 #endif
+
+void fun1() {
+   Debug_Printf(25,31,true,0,"func1");
+}
+void fun2() {
+   Debug_Printf(25,31,true,0,"func2");
+}
+void fun3() {
+   Debug_Printf(25,31,true,0,"func3");
+}
 
 //The acutal main
 void main2() {
@@ -27,6 +38,12 @@ void main2() {
 	
 	bool game_running = true;
 	uint32_t frame = 0;
+
+	// Add event listeners
+	addListener(KEY_BACKSPACE, fun1);
+   	addListener(KEY_LEFT, fun2);
+	addListener(KEY_RIGHT, fun3);
+
 	while (game_running) {
 		frame++;
 		uint32_t key1, key2;
@@ -35,6 +52,7 @@ void main2() {
 		fillScreen(color(22, 22, 22));
 		debug_init(frame);
 		Debug_Printf(13,5,true,0,"Game Runing: %8d",game_running);
+		checkEvents();
 		LCD_Refresh();
 	}
 	
