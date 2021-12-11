@@ -2,8 +2,8 @@
 
 #include "calc.hpp"
 #include "draw_functions.hpp"
-#include "lib/debug.hpp"
 #include "lib/core/event_handler.hpp"
+#include "lib/debug.hpp"
 
 #ifndef PC
 	APP_NAME("HHK Game Engine")
@@ -21,6 +21,17 @@ void fun2() {
 void fun3() {
    Debug_Printf(25,31,true,0,"func3");
 }
+void fun4() {
+   Debug_Printf(25,31,true,0,"func4");
+}
+
+// Tracks the main game loop
+bool game_running = true;
+
+// Ends the game and is called by the event handler
+void endGame() {
+	game_running = false;
+}
 
 //The acutal main
 void main2() {
@@ -36,23 +47,23 @@ void main2() {
 		LCD_Refresh();
 	}
 	
-	bool game_running = true;
 	uint32_t frame = 0;
 
 	// Add event listeners
+	addListener(KEY_BACKSPACE, toggleDebug); // toggle debug mode
+	addListener(KEY_CLEAR, endGame); // end the game
+
 	addListener(KEY_BACKSPACE, fun1);
    	addListener(KEY_LEFT, fun2);
 	addListener(KEY_RIGHT, fun3);
+	addListener2(KEY_DOWN, fun4);
 
 	while (game_running) {
 		frame++;
-		uint32_t key1, key2;
-		getKey(&key1, &key2);
-		if (testKey(key1, key2, KEY_CLEAR)) game_running = false; 
 		fillScreen(color(22, 22, 22));
-		debug_init(frame);
-		Debug_Printf(13,5,true,0,"Game Runing: %8d",game_running);
+		debugger(frame);
 		checkEvents();
+		Debug_Printf(13,5,true,0,"Game Runing: %8d",game_running);
 		LCD_Refresh();
 	}
 	
