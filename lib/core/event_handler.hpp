@@ -38,6 +38,19 @@ void addListener(Keys1 key, void (*func)()) {
    listener_count++;
 }
 
+void removeListener(Keys1 key) {
+   for (uint8_t i = 0; i < listener_count; i++) {
+      if (listeners[i] == key) {
+         // Shift all elements down
+         listener_count--;
+         for (uint8_t j = i; j < listener_count; j++) {
+            listeners[j] = listeners[j + 1];
+            func_ptr[j] = func_ptr[j + 1];
+         }
+      }
+   }
+}
+
 void checkEvents() {
    //Read the keyboard
    ev_old1 = ev_key1;
