@@ -8,8 +8,10 @@
  * It can be useful to track memory usage, framerate and other information.
  * 
  * @code{cpp}
- * // add a listener to the Power Key that calls myFunctionName when pressed
- * addListener(KEY_EXP, myFunctionName);  
+ * // add a listener to the LEFT key that calls myFunctionName when pressed
+ * addListener(KEY_LEFT, myFunctionName);  
+ * // there are two different key enums, Keys1 and Keys2, so you use the same function name with a 2 on the end for Keys2
+ * addListener2(KEY_UP, myFunctionName2);  
  * 
  * // starts a game loop
  * bool game_running = true;
@@ -27,7 +29,7 @@ uint32_t ev_key1, ev_key2;
 uint32_t ev_old1 = 0;
 uint32_t ev_old2 = 0;
 
-// Currently only storing 5 events
+// Keys1
 Keys1 listeners[5] = {KEY_CLEAR, KEY_CLEAR, KEY_CLEAR, KEY_CLEAR, KEY_CLEAR};
 void (*func_ptr[5])() = {0, 0, 0, 0, 0};
 uint8_t listener_count = 0;
@@ -51,6 +53,30 @@ void removeListener(Keys1 key) {
    }
 }
 
+// Keys2
+Keys2 listeners2[5] = {KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD};
+void (*func_ptr2[5])() = {0, 0, 0, 0, 0};
+uint8_t listener_count2 = 0;
+
+void addListener2(Keys2 key, void (*func)()) {
+   listeners2[listener_count2] = key;
+   func_ptr2[listener_count2] = func;
+   listener_count2++;
+}
+
+void removeListener2(Keys2 key) {
+   for (uint8_t i = 0; i < listener_count2; i++) {
+      if (listeners2[i] == key) {
+         // Shift all elements down
+         listener_count2--;
+         for (uint8_t j = i; j < listener_count2; j++) {
+            listeners2[j] = listeners2[j + 1];
+            func_ptr2[j] = func_ptr2[j + 1];
+         }
+      }
+   }
+}
+
 void checkEvents() {
    //Read the keyboard
    ev_old1 = ev_key1;
@@ -58,19 +84,24 @@ void checkEvents() {
    getKey(&ev_key1, &ev_key2);
 
    if (ev_old1 != ev_key1 || ev_old2 != ev_key2) {
+      bool key1_pressed = false;
       for (uint8_t i = 0; i < listener_count; i++) {
-         // Check if the listener is not 0
-         if (listeners[i] != KEY_CLEAR) {
+         // Check if the key is pressed
+         if (testKey(ev_key1,ev_key2,listeners[i])) {
+            // call the function
+            (*func_ptr[i])();
+            key1_pressed = true;
+            break; // no need to check the rest of the keys
+         }
+      }
+      if (!key1_pressed) { // check if key already found
+         for (uint8_t i = 0; i < listener_count2; i++) {
             // Check if the key is pressed
-            if (testKey(ev_key1,ev_key2,listeners[i])) {
-               // check for the function pointer
-               if (func_ptr[i] != 0) {
-                  // call the function
-                  (*func_ptr[i])();
-               }
+            if (testKey(ev_key1,ev_key2,listeners2[i])) {
+               // call the function
+               (*func_ptr2[i])();
+               break; // no need to check the rest of the keys
             }
-         } else {
-            break; // no need to check the rest of the listeners
          }
       }
    }
