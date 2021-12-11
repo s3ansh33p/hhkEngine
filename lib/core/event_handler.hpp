@@ -2,7 +2,7 @@
  * @file event_handler.hpp
  * @author Sean McGinty (newfolderlocation@gmail.com)
  * @brief Event handler class to keep track of events and their handlers.
- * @version 1.0
+ * @version 1.1
  * @date 2021-12-11
  * 
  * It can be useful to track memory usage, framerate and other information.
@@ -29,9 +29,9 @@ uint32_t ev_key1, ev_key2;
 uint32_t ev_old1 = 0;
 uint32_t ev_old2 = 0;
 
-// Keys1
-Keys1 listeners[5] = {KEY_CLEAR, KEY_CLEAR, KEY_CLEAR, KEY_CLEAR, KEY_CLEAR};
-void (*func_ptr[5])() = {0, 0, 0, 0, 0};
+// Keys1 - 16 keys in enum
+Keys1 listeners[16] = {KEY_CLEAR, KEY_CLEAR, KEY_CLEAR, KEY_CLEAR, KEY_CLEAR, KEY_CLEAR, KEY_CLEAR, KEY_CLEAR, KEY_CLEAR, KEY_CLEAR, KEY_CLEAR, KEY_CLEAR, KEY_CLEAR, KEY_CLEAR, KEY_CLEAR, KEY_CLEAR};
+void (*func_ptr[16])() = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 uint8_t listener_count = 0;
 
 void addListener(Keys1 key, void (*func)()) {
@@ -53,9 +53,9 @@ void removeListener(Keys1 key) {
    }
 }
 
-// Keys2
-Keys2 listeners2[5] = {KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD};
-void (*func_ptr2[5])() = {0, 0, 0, 0, 0};
+// Keys2 - 18 keys in enum
+Keys2 listeners2[18] = {KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD, KEY_KEYBOARD};
+void (*func_ptr2[18])() = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 uint8_t listener_count2 = 0;
 
 void addListener2(Keys2 key, void (*func)()) {
