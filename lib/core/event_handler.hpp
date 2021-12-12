@@ -5,7 +5,7 @@
  * @version 1.1
  * @date 2021-12-11
  * 
- * It can be useful to track memory usage, framerate and other information.
+ * Tracks keys and callback functions for events.
  * 
  * @code{cpp}
  * // add a listener to the LEFT key that calls myFunctionName when pressed

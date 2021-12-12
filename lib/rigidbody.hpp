@@ -11,7 +11,8 @@
  * @endcode
  */
 
-#define NUM_RIGID_BODIES 1
+#include "../trig_functions.hpp"
+#define NUM_RIGID_BODIES 10
 
 // 2D box shape. Physics engines usually have a couple different classes of shapes
 // such as circles, spheres (3D), cylinders, capsules, polygons, polyhedrons (3D)...
@@ -34,7 +35,7 @@ void CalculateBoxInertia(BoxShape *boxShape) {
 typedef struct {
     Vector2 position;
     Vector2 linearVelocity;
-    int angle;
+    uint16_t angle;
     int angularVelocity;
     Vector2 force;
     int torque;
@@ -54,20 +55,28 @@ void PrintRigidBodies() {
     }
 }
 
+void renderRigidBodies() {
+    for (int i = 0; i < NUM_RIGID_BODIES; ++i) {
+        RigidBody *rigidBody = &rigidBodies[i];
+        // Draw a line from the position of the body to itself rotated by the angle.
+        line(rigidBody->position.x, rigidBody->position.y, rigidBody->position.x + COS(rigidBody->angle, rigidBody->shape.height), rigidBody->position.y + SIN(rigidBody->angle, rigidBody->shape.height), color(255, 255, 255));
+    }
+}
+
 // Initializes rigid bodies with random positions and angles and zero linear and angular velocities.
 // They're all initialized with a box shape of random dimensions.
 void InitializeRigidBodies() {
     for (int i = 0; i < NUM_RIGID_BODIES; ++i) {
         RigidBody *rigidBody = &rigidBodies[i];
-        rigidBody->position = (Vector2){10, 10};
-        rigidBody->angle = 90; // between 0 and 360
+        rigidBody->position = (Vector2){10 * (i + 1), 10};
+        rigidBody->angle = 0; // between 0 and 360
         rigidBody->linearVelocity = (Vector2){0, 0};
-        rigidBody->angularVelocity = 0;
+        rigidBody->angularVelocity = 3;
         
         BoxShape shape;
-        shape.mass = 10;
-        shape.width = 3;
-        shape.height = 2;
+        shape.mass = 2;
+        shape.width = 2;
+        shape.height = 8 * (i % 4 + 1);
         CalculateBoxInertia(&shape);
         rigidBody->shape = shape;
     }
@@ -75,7 +84,7 @@ void InitializeRigidBodies() {
 
 // Applies a force at a point in the body, inducing some torque.
 void ComputeForceAndTorque(RigidBody *rigidBody) {
-    Vector2 f = (Vector2){0, 100};
+    Vector2 f = (Vector2){2, 4};
     rigidBody->force = f;
     // r is the 'arm vector' that goes from the center of mass to the point of force application
     Vector2 r = (Vector2){rigidBody->shape.width / 2, rigidBody->shape.height / 2};
@@ -84,7 +93,7 @@ void ComputeForceAndTorque(RigidBody *rigidBody) {
 
 void RunRigidBodySimulation() {
     DebugYCounter = 5; // reset the output position
-    int totalSimulationTime = 10; // The simulation will run for 10 seconds.
+    int totalSimulationTime = 5; // The simulation will run for 10 seconds.
     int currentTime = 0; // This accumulates the time that has passed.
     int dt = 1; // Each step will take one second.
     
@@ -108,5 +117,25 @@ void RunRigidBodySimulation() {
         
         PrintRigidBodies();
         currentTime += dt;
+    }
+}
+
+void computeRigidBodyStep() {
+    int dt = 1; // Each step will take one second.
+    for (int i = 0; i < NUM_RIGID_BODIES; ++i) {
+        RigidBody *rigidBody = &rigidBodies[i];
+        ComputeForceAndTorque(rigidBody);
+        Vector2 linearAcceleration = (Vector2){rigidBody->force.x / rigidBody->shape.mass, rigidBody->force.y / rigidBody->shape.mass};
+        rigidBody->linearVelocity.x += linearAcceleration.x * dt;
+        rigidBody->linearVelocity.y += linearAcceleration.y * dt;
+        rigidBody->position.x += rigidBody->linearVelocity.x * dt;
+        rigidBody->position.y += rigidBody->linearVelocity.y * dt;
+        int angularAcceleration = rigidBody->torque / rigidBody->shape.momentOfInertia;
+        rigidBody->angularVelocity += angularAcceleration * dt;
+        rigidBody->angle += rigidBody->angularVelocity * dt;
+        if (rigidBody->angle > 360) {
+            rigidBody->angle -= 360;
+        }
+        Debug_Printf(8,5 + i,true,0,"[%i] p(%i, %i) a = %i, i = %i, t = %i", i, rigidBody->position.x, rigidBody->position.y, rigidBody->angle, rigidBody->shape.momentOfInertia, rigidBody->torque);
     }
 }
