@@ -10,8 +10,6 @@ int FoV = 20;
 int CamXPos = 0;
 int CamYPos = 0;
 int CamZPos = 100;
-const int cw = 160;
-const int ch = 264;
 
 void DrawTri3D(int x, int y, int z, int x2, int y2, int z2, int x3, int y3, int z3)
 {
