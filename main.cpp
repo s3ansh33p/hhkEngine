@@ -4,6 +4,11 @@
 #include "draw_functions.hpp"
 #include "lib/core/event_handler.hpp"
 #include "lib/debug.hpp"
+#include "lib/environment.hpp"
+#include "lib/particle.hpp"
+#include "lib/rigidbody.hpp"
+#include "lib/renderer.hpp"
+#include "lib/trig3d.hpp"
 
 #ifndef PC
 	APP_NAME("HHK Game Engine")
@@ -12,25 +17,26 @@
 	APP_VERSION("0.0.1")
 #endif
 
-void fun1() {
-   Debug_Printf(25,31,true,0,"func1");
-}
-void fun2() {
-   Debug_Printf(25,31,true,0,"func2");
-}
-void fun3() {
-   Debug_Printf(25,31,true,0,"func3");
-}
-void fun4() {
-   Debug_Printf(25,31,true,0,"func4");
-}
-
 // Tracks the main game loop
 bool game_running = true;
 
 // Ends the game and is called by the event handler
 void endGame() {
 	game_running = false;
+}
+
+void fun1() {
+   	Debug_Printf(25,31,true,0,"func1");
+}
+void fun2() {
+   	Debug_Printf(25,31,true,0,"func2");
+}
+void fun3() {
+	Debug_Printf(25,31,true,0,"func3");
+}
+void fun4() {
+    Debug_Printf(25,31,true,0,"func4");
+	RunRigidBodySimulation();
 }
 
 //The acutal main
@@ -48,6 +54,8 @@ void main2() {
 	}
 	
 	uint32_t frame = 0;
+	// Renderer renderer(0,0,319,527); // x,y,w,h
+	// InitializeRigidBodies();
 
 	// Add event listeners
 	addListener(KEY_BACKSPACE, toggleDebug); // toggle debug mode
@@ -61,9 +69,15 @@ void main2() {
 	while (game_running) {
 		frame++;
 		fillScreen(color(22, 22, 22));
-		debugger(frame);
 		checkEvents();
-		Debug_Printf(13,5,true,0,"Game Runing: %8d",game_running);
+		
+		DrawTri3D(1000,1000,20,100,100,80,100,500,20);
+		// Debug_Printf(13,5,true,0,"Game Runing: %8d",game_running);
+
+		// renderer.render();
+		// Debug_Printf(15,27,true,0,"Renderer %i", renderer.getCurrentTime());
+
+		debugger(frame);
 		LCD_Refresh();
 	}
 	
