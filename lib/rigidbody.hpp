@@ -45,16 +45,6 @@ typedef struct {
 // Global array of rigid bodies.
 RigidBody rigidBodies[NUM_RIGID_BODIES];
 
-// Prints the position and angle of each body on the output.
-// We could instead draw them on screen.
-void PrintRigidBodies() {
-    for (int i = 0; i < NUM_RIGID_BODIES; ++i) {
-        RigidBody *rigidBody = &rigidBodies[i];
-        DebugYCounter += 2;
-        Debug_Printf(10,DebugYCounter,true,0,"body[%i] p = (%i, %i), a = %i", i, rigidBody->position.x, rigidBody->position.y, rigidBody->angle);
-    }
-}
-
 void renderRigidBodies() {
     for (int i = 0; i < NUM_RIGID_BODIES; ++i) {
         RigidBody *rigidBody = &rigidBodies[i];
@@ -91,37 +81,7 @@ void ComputeForceAndTorque(RigidBody *rigidBody) {
     rigidBody->torque = r.x * f.y - r.y * f.x;
 }
 
-void RunRigidBodySimulation() {
-    DebugYCounter = 5; // reset the output position
-    int totalSimulationTime = 5; // The simulation will run for 10 seconds.
-    int currentTime = 0; // This accumulates the time that has passed.
-    int dt = 1; // Each step will take one second.
-    
-    InitializeRigidBodies();
-    PrintRigidBodies();
-    
-    while (currentTime < totalSimulationTime) {
-        
-        for (int i = 0; i < NUM_RIGID_BODIES; ++i) {
-            RigidBody *rigidBody = &rigidBodies[i];
-            ComputeForceAndTorque(rigidBody);
-            Vector2 linearAcceleration = (Vector2){rigidBody->force.x / rigidBody->shape.mass, rigidBody->force.y / rigidBody->shape.mass};
-            rigidBody->linearVelocity.x += linearAcceleration.x * dt;
-            rigidBody->linearVelocity.y += linearAcceleration.y * dt;
-            rigidBody->position.x += rigidBody->linearVelocity.x * dt;
-            rigidBody->position.y += rigidBody->linearVelocity.y * dt;
-            int angularAcceleration = rigidBody->torque / rigidBody->shape.momentOfInertia;
-            rigidBody->angularVelocity += angularAcceleration * dt;
-            rigidBody->angle += rigidBody->angularVelocity * dt;
-        }
-        
-        PrintRigidBodies();
-        currentTime += dt;
-    }
-}
-
-void computeRigidBodyStep() {
-    int dt = 1; // Each step will take one second.
+void computeRigidBodyStep(int dt) {
     for (int i = 0; i < NUM_RIGID_BODIES; ++i) {
         RigidBody *rigidBody = &rigidBodies[i];
         ComputeForceAndTorque(rigidBody);

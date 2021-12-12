@@ -29,13 +29,10 @@ typedef struct {
 // Global array of particles.
 Particle particles[NUM_PARTICLES];
 
-// Prints all particles' position to the output. We could instead draw them on screen
-// in a more interesting application.
-void  PrintParticles() {
+void renderParticles() {
     for (int i = 0; i < NUM_PARTICLES; ++i) {
         Particle *particle = &particles[i];
-        DebugYCounter += 2;
-        Debug_Printf(10,DebugYCounter,true,0,"particle[%i] P(%i, %i) V(%i, %i)", i, particle->position.x, particle->position.y, particle->velocity.x, particle->velocity.y);
+        setPixel(particle->position.x, particle->position.y, color(255, 0, 0));
     }
 }
 
@@ -50,31 +47,19 @@ void InitializeParticles() {
 
 // Just applies Earth's gravity force (mass times gravity acceleration 9.81 m/s^2) to each particle. approximated to 10 m/s^2 as can;t use floats
 Vector2 ComputeForce(Particle *particle) {
-    return (Vector2){0, particle->mass * GRAVITY};
+    return (Vector2){0, particle->mass * 10};
 }
 
-void RunSimulation() {
-    DebugYCounter = 5; // reset the output position
-    int totalSimulationTime = 5; // The simulation will run for 5 seconds.
-    int currentTime = 0; // This accumulates the time that has passed.
-    int dt = 1; // Each step will take one second.
-    
-    InitializeParticles();
-    PrintParticles();
-    
-    while (currentTime < totalSimulationTime) {
-
-        for (int i = 0; i < NUM_PARTICLES; ++i) {
-            Particle *particle = &particles[i];
-            Vector2 force = ComputeForce(particle);
-            Vector2 acceleration = (Vector2){force.x / particle->mass, force.y / particle->mass};
-            particle->velocity.x += acceleration.x * dt;
-            particle->velocity.y += acceleration.y * dt;
-            particle->position.x += particle->velocity.x * dt;
-            particle->position.y += particle->velocity.y * dt;
-        }
-        
-        PrintParticles();
-        currentTime += dt;
+void computeParticleStep(int dt) {
+    for (int i = 0; i < NUM_PARTICLES; ++i) {
+        Particle *particle = &particles[i];
+        Vector2 force = ComputeForce(particle);
+        Vector2 acceleration = (Vector2){force.x / particle->mass, force.y / particle->mass};
+        particle->velocity.x += acceleration.x * dt;
+        particle->velocity.y += acceleration.y * dt;
+        particle->position.x += particle->velocity.x * dt;
+        particle->position.y += particle->velocity.y * dt;
+        Debug_Printf(8,5 + i,true,0,"[%i] p(%i, %i) v(%i, %i)", i, particle->position.x, particle->position.y, particle->velocity.x, particle->velocity.y);
     }
 }
+
