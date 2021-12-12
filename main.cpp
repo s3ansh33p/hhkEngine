@@ -4,16 +4,13 @@
 #include "draw_functions.hpp"
 #include "lib/core/event_handler.hpp"
 #include "lib/debug.hpp"
-#include "lib/environment.hpp"
-#include "lib/particle.hpp"
-#include "lib/rigidbody.hpp"
 #include "lib/renderer.hpp"
 #include "lib/trig3d.hpp"
 
 #ifndef PC
 	APP_NAME("HHK Game Engine")
 	APP_DESCRIPTION("Game Engine in development for HHK")
-	APP_AUTHOR("InterChan / s3ash33p")
+	APP_AUTHOR("InterChan / s3ansh33p")
 	APP_VERSION("0.0.1")
 #endif
 
@@ -25,18 +22,21 @@ void endGame() {
 	game_running = false;
 }
 
-void fun1() {
-   	Debug_Printf(25,31,true,0,"func1");
+void camXIncrease() {
+	CamXPos++;
+   	Debug_Printf(25,31,true,0,"+Cam X: %i",CamXPos);
 }
-void fun2() {
-   	Debug_Printf(25,31,true,0,"func2");
+void camXDecrease() {
+	CamXPos--;
+   	Debug_Printf(25,31,true,0,"-Cam X: %i",CamXPos);
 }
-void fun3() {
-	Debug_Printf(25,31,true,0,"func3");
+void camZIncrease() {
+	CamZPos++;
+   	Debug_Printf(25,31,true,0,"+Cam Z: %i",CamZPos);
 }
-void fun4() {
-    Debug_Printf(25,31,true,0,"func4");
-	RunRigidBodySimulation();
+void camZDecrease() {
+	CamZPos--;
+   	Debug_Printf(25,31,true,0,"-Cam Z: %i",CamZPos);
 }
 
 //The acutal main
@@ -44,7 +44,6 @@ void main2() {
 	
 	// load the textures and fonts
 	LOAD_FONT_PTR("fnt\\7x8", f_7x8);
-	
 
 	// game starting screen
 	for (int i = 0; i < 100; i+=5) {
@@ -54,28 +53,31 @@ void main2() {
 	}
 	
 	uint32_t frame = 0;
-	// Renderer renderer(0,0,319,527); // x,y,w,h
-	// InitializeRigidBodies();
+	Renderer renderer(0,0,320,528); // x,y,w,h
+	// will need to refactor
+	InitializeRigidBodies();
+	InitializeParticles();
 
+	renderer.setRigidBodyCount(NUM_RIGID_BODIES);
+	renderer.setParticleCount(NUM_PARTICLES);
+	
 	// Add event listeners
 	addListener(KEY_BACKSPACE, toggleDebug); // toggle debug mode
 	addListener(KEY_CLEAR, endGame); // end the game
 
-	addListener(KEY_BACKSPACE, fun1);
-   	addListener(KEY_LEFT, fun2);
-	addListener(KEY_RIGHT, fun3);
-	addListener2(KEY_DOWN, fun4);
+   	addListener(KEY_LEFT, camXIncrease);
+	addListener(KEY_RIGHT, camXDecrease);
+	addListener2(KEY_UP, camZIncrease);
+	addListener2(KEY_DOWN, camZDecrease);
 
 	while (game_running) {
 		frame++;
 		fillScreen(color(22, 22, 22));
 		checkEvents();
 		
-		DrawTri3D(1000,1000,20,100,100,80,100,500,20);
-		// Debug_Printf(13,5,true,0,"Game Runing: %8d",game_running);
+		renderer.render();
 
-		// renderer.render();
-		// Debug_Printf(15,27,true,0,"Renderer %i", renderer.getCurrentTime());
+		DrawTri3D(10,10,2,10,10,8,10,5,2);
 
 		debugger(frame);
 		LCD_Refresh();
