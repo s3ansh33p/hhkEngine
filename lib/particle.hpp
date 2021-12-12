@@ -11,10 +11,7 @@
  * @endcode
  */
 
-
 #define NUM_PARTICLES 1
-int GRAVITY = -10;
-int DebugYCounter = 5;
 
 // Two dimensional vector.
 typedef struct {
