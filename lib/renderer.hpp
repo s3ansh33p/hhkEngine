@@ -6,6 +6,8 @@
  * @date 2021-12-12
  */
 
+#pragma once
+
 #include "particle.hpp"
 #include "rigidbody.hpp"
 #include "../calc.hpp"

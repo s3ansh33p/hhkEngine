@@ -56,10 +56,10 @@ void main2() {
 	Renderer renderer(0,0,320,528); // x,y,w,h
 	// will need to refactor
 	InitializeRigidBodies();
-	InitializeParticles();
+	// InitializeParticles();
 
-	renderer.setRigidBodyCount(NUM_RIGID_BODIES);
-	renderer.setParticleCount(NUM_PARTICLES);
+	renderer.setRigidBodyCount(MAX_RIGIDBODIES);
+	renderer.setParticleCount(MAX_PARTICLES);
 	
 	// Add event listeners
 	addListener(KEY_BACKSPACE, toggleDebug); // toggle debug mode

@@ -11,13 +11,11 @@
  * @endcode
  */
 
-#define NUM_PARTICLES 1
+#pragma once
 
-// Two dimensional vector.
-typedef struct {
-    int x;
-    int y;
-} Vector2;
+#include "environment.hpp"
+
+int particleCount = 0;
 
 // Two dimensional particle.
 typedef struct {
@@ -27,22 +25,21 @@ typedef struct {
 } Particle;
 
 // Global array of particles.
-Particle particles[NUM_PARTICLES];
+Particle particles[MAX_PARTICLES];
 
 void renderParticles() {
-    for (int i = 0; i < NUM_PARTICLES; ++i) {
+    for (int i = 0; i < particleCount; ++i) {
         Particle *particle = &particles[i];
         setPixel(particle->position.x, particle->position.y, color(255, 0, 0));
     }
 }
 
-// Initializes all particles with random positions, zero velocities and 1kg mass.
-void InitializeParticles() {
-    for (int i = 0; i < NUM_PARTICLES; ++i) {
-        particles[i].position = (Vector2){10, 10};
-        particles[i].velocity = (Vector2){-2, 0};
-        particles[i].mass = 1;
-    }
+// Create a particle given a position, velocity and mass.
+void createParticle(int x, int y, int vx, int vy, int mass) {
+    particles[particleCount].position = (Vector2){x, y};
+    particles[particleCount].velocity = (Vector2){vx, vy};
+    particles[particleCount].mass = mass;
+    particleCount++;
 }
 
 // Just applies Earth's gravity force (mass times gravity acceleration 9.81 m/s^2) to each particle. approximated to 10 m/s^2 as can;t use floats
@@ -51,7 +48,7 @@ Vector2 ComputeForce(Particle *particle) {
 }
 
 void computeParticleStep(int dt) {
-    for (int i = 0; i < NUM_PARTICLES; ++i) {
+    for (int i = 0; i < particleCount; ++i) {
         Particle *particle = &particles[i];
         Vector2 force = ComputeForce(particle);
         Vector2 acceleration = (Vector2){force.x / particle->mass, force.y / particle->mass};
@@ -62,4 +59,3 @@ void computeParticleStep(int dt) {
         Debug_Printf(8,5 + i,true,0,"[%i] p(%i, %i) v(%i, %i)", i, particle->position.x, particle->position.y, particle->velocity.x, particle->velocity.y);
     }
 }
-

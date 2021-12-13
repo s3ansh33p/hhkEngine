@@ -1,0 +1,6 @@
+# Ignore make files
+main.o
+calc.o
+div.o
+hhkengine.hhk
+_hhkengine.elf
