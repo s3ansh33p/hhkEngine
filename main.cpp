@@ -37,6 +37,17 @@ void camZIncrease() {
 void camZDecrease() {
 	CamZPos--;
    	Debug_Printf(25,31,true,0,"-Cam Z: %i",CamZPos);
+
+	removeAllParticles();
+	removeAllRigidBodies();
+
+	createParticle(10, 10, 0, 0, 2);
+	createParticle(40, 10, 0, 0, 2);
+	createParticle(70, 10, 0, 0, 2);
+
+	createRigidBody(100, 10, 0, 0, 0, 0, 2, 8, 2);
+	createRigidBody(150, 10, 0, 0, 0, 0, 2, 8, 2);
+	createRigidBody(200, 10, 0, 0, 0, 0, 2, 8, 2);
 }
 
 //The acutal main
@@ -55,12 +66,14 @@ void main2() {
 	uint32_t frame = 0;
 	Renderer renderer(0,0,320,528); // x,y,w,h
 	// will need to refactor
-	InitializeRigidBodies();
-	// InitializeParticles();
+	createParticle(10, 10, 0, 0, 2);
+	createParticle(40, 10, 0, 0, 2);
+	createParticle(70, 10, 0, 0, 2);
 
-	renderer.setRigidBodyCount(MAX_RIGIDBODIES);
-	renderer.setParticleCount(MAX_PARTICLES);
-	
+	createRigidBody(100, 10, 0, 0, 0, 0, 2, 8, 2);
+	createRigidBody(150, 10, 0, 0, 0, 0, 2, 8, 2);
+	createRigidBody(200, 10, 0, 0, 0, 0, 2, 8, 2);
+
 	// Add event listeners
 	addListener(KEY_BACKSPACE, toggleDebug); // toggle debug mode
 	addListener(KEY_CLEAR, endGame); // end the game

@@ -20,8 +20,6 @@ class Renderer {
     int height = 0;         // height of the window
     int currentTime = 0;    // current time of the renderer
     int deltaTime = 1;      // time (in seconds) for each step
-    int particleCount = 0;  // number of particles in the renderer
-    int rigidBodyCount = 0; // number of rigid bodies in the renderer
 
     /**
      * Create a new renderer
@@ -59,23 +57,6 @@ class Renderer {
         return this->height;
     }
 
-    // Particle functions
-    int getParticleCount() {
-        return this->particleCount;
-    }
-
-    int getRigidBodyCount() {
-        return this->rigidBodyCount;
-    }
-
-    void setParticleCount(int particleCount) {
-        this->particleCount = particleCount;
-    }
-
-    void setRigidBodyCount(int rigidBodyCount) {
-        this->rigidBodyCount = rigidBodyCount;
-    }
-
     // Render function
     void render() {
 
@@ -90,19 +71,19 @@ class Renderer {
         // Compute current step
 
         // check if we need to render rigidbodies
-        if (this->rigidBodyCount > 0) {
+        if (rigidBodyCount > 0) {
             computeRigidBodyStep(this->deltaTime);
             renderRigidBodies();
         }
 
         // check if we need to render particles
-        if (this->particleCount > 0) {
+        if (particleCount > 0) {
             computeParticleStep(this->deltaTime);
             renderParticles();
         }
 
         // Tmp
-        Debug_Printf(10,30,true,0,"Renderer (%i, %i) %ix%i", this->x, this->y, this->width, this->height);
+        Debug_Printf(4,40,true,0,"Renderer (%i, %i) %ix%i", this->x, this->y, this->width, this->height);
     };
 
 };

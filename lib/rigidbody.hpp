@@ -23,6 +23,7 @@
 #include "../trig_functions.hpp"
 
 int rigidBodyCount = 0;
+int rigidBodyIDCounter = 0;
 
 // 2D box shape. Physics engines usually have a couple different classes of shapes
 // such as circles, spheres (3D), cylinders, capsules, polygons, polyhedrons (3D)...
@@ -58,18 +59,26 @@ typedef struct {
 RigidBody rigidBodies[MAX_RIGIDBODIES];
 
 void renderRigidBodies() {
-    for (int i = 0; i < rigidBodyCount; ++i) {
+    for (int i = 0; i < rigidBodyCount; i++) {
         RigidBody *rigidBody = &rigidBodies[i];
-        // Draw a line from the position of the body to itself rotated by the angle.
-        line(rigidBody->position.x, rigidBody->position.y, rigidBody->position.x + COS(rigidBody->angle, rigidBody->shape.height), rigidBody->position.y + SIN(rigidBody->angle, rigidBody->shape.height), color(255, 255, 255));
+        // check if the rigid body is visible
+        if (rigidBody->position.x > 0 && rigidBody->position.x < width && rigidBody->position.y > 0 && rigidBody->position.y < height) {
+
+            // Draw a line from the position of the body to itself rotated by the angle.
+            line(rigidBody->position.x, rigidBody->position.y, rigidBody->position.x + COS(rigidBody->angle, rigidBody->shape.height), rigidBody->position.y + SIN(rigidBody->angle, rigidBody->shape.height), color(255, 255, 255));
+
+            Debug_Printf(8,26 + i,true,0,"[%i] p(%i, %i) a = %i, i = %i, t = %i", i, rigidBody->position.x, rigidBody->position.y, rigidBody->angle, rigidBody->shape.momentOfInertia, rigidBody->torque);
+
+        }
     }
 }
 
 // Create a rigidbody given a position, velocity, angle, angular velocity, and shape.
-void createRigidBody(int positionX, int positionY, int velocityX, int velocityY, int angle, int angularVelocity, int forceX, int forceY, int width, int height, int mass) {
+void createRigidBody(int positionX, int positionY, int velocityX, int velocityY, int angle, int angularVelocity, int width, int height, int mass) {
     if (rigidBodyCount < MAX_RIGIDBODIES) {
         RigidBody *rigidBody = &rigidBodies[rigidBodyCount];
-        rigidBody->id = rigidBodyCount;
+        rigidBody->id = rigidBodyIDCounter;
+        rigidBodyIDCounter++;
         rigidBody->position = Vector2{positionX, positionY};
         rigidBody->linearVelocity = Vector2{velocityX, velocityY};
         rigidBody->angle = angle;
@@ -89,7 +98,7 @@ void createRigidBody(int positionX, int positionY, int velocityX, int velocityY,
 // Remove a rigid body from the array.
 void removeRigidBody(int rigidBodyId) {
     if (rigidBodyId < rigidBodyCount) {
-        for (int i = rigidBodyId; i < rigidBodyCount; ++i) {
+        for (int i = rigidBodyId; i < rigidBodyCount; i++) {
             rigidBodies[i] = rigidBodies[i + 1];
         }
         rigidBodyCount--;
@@ -99,6 +108,17 @@ void removeRigidBody(int rigidBodyId) {
 // Remove all rigid bodies from the array.
 void removeAllRigidBodies() {
     rigidBodyCount = 0;
+}
+
+// Get a rigid body from the array given an id.
+RigidBody getRigidBody(int rigidBodyId) {
+    for (int i = 0; i < rigidBodyCount; i++) {
+        if (rigidBodies[i].id == rigidBodyId) {
+            return rigidBodies[i];
+        }
+    }
+    // return an empty rigid body if doesn't exist with id of -1
+    return {-1, Vector2{0, 0}, Vector2{0, 0}, 0, 0, Vector2{0, 0}, 0, BoxShape{0, 0, 0, 0}};
 }
 
 // Applies a force at a point in the body, inducing some torque.
@@ -112,7 +132,7 @@ void ComputeForceAndTorque(RigidBody *rigidBody) {
 
 // Computes the new position and velocity of the rigidbodies given a time step.
 void computeRigidBodyStep(int dt) {
-    for (int i = 0; i < rigidBodyCount; ++i) {
+    for (int i = 0; i < rigidBodyCount; i++) {
         RigidBody *rigidBody = &rigidBodies[i];
         ComputeForceAndTorque(rigidBody);
         Vector2 linearAcceleration = Vector2{rigidBody->force.x / rigidBody->shape.mass, rigidBody->force.y / rigidBody->shape.mass};
@@ -126,6 +146,5 @@ void computeRigidBodyStep(int dt) {
         if (rigidBody->angle > 360) {
             rigidBody->angle -= 360;
         }
-        Debug_Printf(8,5 + i,true,0,"[%i] p(%i, %i) a = %i, i = %i, t = %i", i, rigidBody->position.x, rigidBody->position.y, rigidBody->angle, rigidBody->shape.momentOfInertia, rigidBody->torque);
     }
 }

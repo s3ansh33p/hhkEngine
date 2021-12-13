@@ -77,6 +77,11 @@ void removeListener2(Keys2 key) {
    }
 }
 
+void removeAllListeners() {
+   listener_count = 0;
+   listener_count2 = 0;
+}
+
 void checkEvents() {
    //Read the keyboard
    ev_old1 = ev_key1;
