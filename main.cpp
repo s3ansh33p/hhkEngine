@@ -5,7 +5,7 @@
 #include "lib/core/event_handler.hpp"
 #include "lib/debug.hpp"
 #include "lib/renderer.hpp"
-#include "lib/trig3d.hpp"
+#include "lib/3d/trig3d.hpp"
 
 #ifndef PC
 	APP_NAME("HHK Game Engine")
