@@ -6,6 +6,7 @@
 #include "lib/debug.hpp"
 #include "lib/renderer.hpp"
 #include "lib/3d/trig3d.hpp"
+#include "lib/save.hpp"
 
 #ifndef PC
 	APP_NAME("HHK Game Engine")
@@ -50,6 +51,14 @@ void camZDecrease() {
 	createRigidBody(200, 10, 0, 0, 0, 0, 2, 8, 2);
 }
 
+void save() {
+	writeSave("save.sav");
+}
+
+void load() {
+	loadSave("save.sav");
+}
+
 //The acutal main
 void main2() {
 	
@@ -82,6 +91,9 @@ void main2() {
 	addListener(KEY_RIGHT, camXDecrease);
 	addListener2(KEY_UP, camZIncrease);
 	addListener2(KEY_DOWN, camZDecrease);
+
+	addListener2(KEY_X, load);
+	addListener2(KEY_Y, save);
 
 	while (game_running) {
 		frame++;
