@@ -48,7 +48,7 @@ void loadSave(const char* filename) {
         return;
     }
 
-    Debug_Printf(4,42,true,0,"Ver: %i.%i.%i Len: %i Ter: %i, Dat: %i %i %i", buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7]);
+    Debug_Printf(4,42,true,0,"Ver: %i.%i.%i BL: %i Len: %i, Dat: %i %i %i", buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7]);
     return;
 }
 
@@ -67,13 +67,13 @@ void writeSave(const char* filename) {
     // [0] = 0x00 Major of engine
     // [1] = 0x00 Minor of engine
     // [2] = 0x01 Patch of engine
-    // [3] = 0x03 Data length byte/s - up to three bytes
-    // [4] = 0x00 Termination byte
+    // [3] = 0x03 Length bytes of save file - 1 - 3
+    // [4-6] = 0x03 Data length byte/s - up to three bytes
     // [5] = 0x48 "H" - hex data byte
     // [6] = 0x69 "i" - hex data byte
     // [7] = 0x21 "!" - hex data byte
 
-    uint8_t buf[] = {0, 0, 1, 3, 0, 72, 105, 33};
+    uint8_t buf[] = {0, 0, 1, 1, 3, 72, 105, 33};
     int ret = write(fd, buf, sizeof(buf));
     if (ret < 0) {
         Debug_Printf(4,42,true,0,"[ERROR::File:Write] [%i]", ret);

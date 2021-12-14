@@ -6,6 +6,8 @@
  * @date 2021-12-13
  */
 
+#include "../../calc.hpp"
+
 int FoV = 20;
 int CamXPos = 0;
 int CamYPos = 0;
