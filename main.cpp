@@ -11,7 +11,7 @@
 #ifndef PC
 	APP_NAME("HHK Game Engine")
 	APP_DESCRIPTION("Game Engine in development for HHK")
-	APP_AUTHOR("InterChan / s3ansh33p")
+	APP_AUTHOR("InterChan / s3ansh33p / SnailMath / DasHeiligeDönerhuhn")
 	APP_VERSION("0.0.1")
 #endif
 

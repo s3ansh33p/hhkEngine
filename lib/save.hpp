@@ -35,20 +35,32 @@ void loadSave(const char* filename) {
         return;
     }
 
-    uint8_t buf[14];
+    uint16_t buf[6];
     int ret = read(fd, buf, sizeof(buf));
     if (ret < 0) {
         Debug_Printf(4,42,true,0,"[ERROR::File:Read] [%i]", ret);
         close(fd);
         return;
     }
+
+    // read the header for the len bytes
+    uint16_t len = 0;
+    if (buf[3] == 2) {
+        len = uint8to16(buf[4], buf[5]);
+    } else {
+        len = uint8to16(0, buf[4]);
+    }
+
+    // Print the length of the save file
+    Debug_Printf(4,42,true,0,"Ver: %i.%i.%i BL: %i Len: %i", buf[0], buf[1], buf[2], buf[3], len);
+
+    // Close the file as we don't need it anymore
     ret = close(fd);
     if (ret < 0) {
         Debug_Printf(4,42,true,0,"[ERROR::File:Close] [%i]", ret);
         return;
     }
 
-    Debug_Printf(4,42,true,0,"Ver: %i.%i.%i BL: %i Len: %i, Dat: %i %i %i", buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7]);
     return;
 }
 
@@ -67,8 +79,8 @@ void writeSave(const char* filename) {
     // [0] = 0x00 Major of engine
     // [1] = 0x00 Minor of engine
     // [2] = 0x01 Patch of engine
-    // [3] = 0x03 Length bytes of save file - 1 - 3
-    // [4-6] = 0x03 Data length byte/s - up to three bytes
+    // [3] = 0x01 Length bytes of save file - 1 - 2
+    // [4-5] = 0x03 Data length byte/s - 1/2 bytes
     // [5] = 0x48 "H" - hex data byte
     // [6] = 0x69 "i" - hex data byte
     // [7] = 0x21 "!" - hex data byte

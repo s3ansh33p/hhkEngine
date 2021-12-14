@@ -51,14 +51,18 @@ APP_PC:=_$(APP_NAME).elf
 
 APP_ELF:=$(APP_NAME).hhk
 
+APP_BIN:=$(APP_NAME).bin
+
 all: pc hhk
+
+bin: $(APP_BIN) Makefile
 
 pc: $(APP_PC) Makefile
 
 hhk: $(APP_ELF) Makefile
 
 clean:
-	rm -f $(OBJECTS) $(APP_ELF) $(APP_PC)
+	rm -f $(OBJECTS) $(APP_ELF) $(APP_PC) $(APP_BIN)
 
 $(APP_PC):  $(CC_SOURCES) $(CXX_SOURCES) $(H_INC) $(HPP_INC)
 	$(C_PC) $(CC_SOURCES) $(CXX_SOURCES) -o $(APP_PC) $(C_PC_FLAGS)
@@ -69,6 +73,9 @@ $(APP_ELF): $(OBJECTS) $(SDK_DIR)/sdk.o linker.ld
 	$(OBJCOPY) --set-section-flags .hollyhock_description=contents,strings,readonly $(APP_ELF) $(APP_ELF)
 	$(OBJCOPY) --set-section-flags .hollyhock_author=contents,strings,readonly $(APP_ELF) $(APP_ELF)
 	$(OBJCOPY) --set-section-flags .hollyhock_version=contents,strings,readonly $(APP_ELF) $(APP_ELF)
+
+$(APP_BIN): $(OBJECTS) $(SDK_DIR)/sdk.o linker.bin.ld
+	$(LD) --oformat binary -T linker.bin.ld -o $@ $(LD_FLAGS) $(OBJECTS) $(SDK_DIR)/sdk.o
 
 # We're not actually building sdk.o, just telling the user they need to do it
 # themselves. Just using the target to trigger an error when the file is
