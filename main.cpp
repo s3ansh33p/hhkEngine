@@ -7,6 +7,7 @@
 #include "lib/core/debug.hpp"
 #include "lib/renderer.hpp"
 #include "lib/3d/3d.cpp"
+#include "lib/functions/random.hpp"
 
 #ifndef PC
 	APP_NAME("HHK Game Engine")
@@ -135,6 +136,10 @@ void main2() {
 	addListener2(KEY_X, load);
 	addListener2(KEY_Y, save);
 
+
+	RandomGenerator rng;
+	rng.SetSeed(182);
+	
 	while (game_running) {
 		frame++;
 		fillScreen(color(0, 0, 64));
@@ -148,6 +153,11 @@ void main2() {
 		cube(0,0,20,50,color(255,0,0));//The outer cube
 		triangle( 0,0,0, 50,0,0, 0,50,50, color(255,128,128),color(255,0,0));//The triangle
 		*/
+
+		rng.Generate(50);
+		
+		Debug_Printf(1,20,true,0,"RNG: %i",rng.m_x);
+
 
 		renderer.rectangleManager->renderRectangles();
 		renderer.render();
