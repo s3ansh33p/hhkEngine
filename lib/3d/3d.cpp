@@ -1,9 +1,9 @@
 /**
  * @file 3d.cpp
  * @author SnailMath
- * @brief 3d library (a bit old and will be refactored)
- * @version 1.0
- * @date 2021-12-14
+ * @brief 3d library
+ * @version 1.1
+ * @date 2021-12-16
  */
 
 #include "../../calc.hpp"
@@ -116,6 +116,19 @@ void line(int x1, int y1, int z1, int x2, int y2, int z2, uint16_t color){
 		  to3dx(x2,y2,z2),
 		  to3dy(x2,y2,z2),
 		  color);
+}
+
+void triangle(	int x1, int y1, int z1,
+		int x2, int y2, int z2,
+		int x3, int y3, int z3,
+		uint16_t c1, uint16_t c2 ){
+	triangle( to3dx(x1,y1,z1),
+		  to3dy(x1,y1,z1),
+		  to3dx(x2,y2,z2),
+		  to3dy(x2,y2,z2),
+		  to3dx(x3,y3,z3),
+		  to3dy(x3,y3,z3),
+		  c1,c2);
 }
 
 //arctan[] contains the values of the result of the function f(x)=ARCTAN(x/ATANS)/PI*1024

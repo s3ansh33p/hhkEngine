@@ -8,6 +8,9 @@
 
 #pragma once
 
+#include "../../calc.hpp"
+#include "../../draw_functions.hpp"
+
 #include <sdk/os/file.hpp>
 #include <sdk/os/mem.hpp>
 #include <sdk/os/string.hpp>

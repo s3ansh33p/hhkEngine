@@ -9,7 +9,7 @@
 #pragma once
 
 // Include all structs
-#include "vector.hpp"
+#include "objects/vector.hpp"
 
 // Physical constants
 int GRAVITY = -10; // gravity that is applied to all objects
@@ -17,3 +17,4 @@ int GRAVITY = -10; // gravity that is applied to all objects
 // Engine settings
 const int MAX_PARTICLES = 10; // max number of particles
 const int MAX_RIGIDBODIES = 10; // max number of rigidbodies
+const int MAX_RECTANGLES = 10; // max number of rectangles

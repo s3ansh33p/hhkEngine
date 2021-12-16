@@ -3,15 +3,15 @@
 #include "calc.hpp"
 #include "draw_functions.hpp"
 #include "lib/core/event_handler.hpp"
-#include "lib/debug.hpp"
+#include "lib/core/save.hpp"
+#include "lib/core/debug.hpp"
 #include "lib/renderer.hpp"
 #include "lib/3d/3d.cpp"
-#include "lib/save.hpp"
 
 #ifndef PC
 	APP_NAME("HHK Game Engine")
 	APP_DESCRIPTION("Game Engine in development for HHK")
-	APP_AUTHOR("InterChan / s3ansh33p / SnailMath / DasHeiligeDönerhuhn")
+	APP_AUTHOR("InterChan / s3ansh33p / SnailMath / DasHeiligeDonerhuhn")
 	APP_VERSION("0.0.1")
 #endif
 
@@ -84,19 +84,6 @@ void load() {
 	loadSave("save.sav");
 }
 
-void runParticleSim() {
-	removeAllParticles();
-	removeAllRigidBodies();
-
-	createParticle(10, 10, 0, 0, 2);
-	createParticle(40, 10, 0, 0, 2);
-	createParticle(70, 10, 0, 0, 2);
-
-	createRigidBody(100, 10, 0, 0, 0, 0, 2, 8, 2);
-	createRigidBody(150, 10, 0, 0, 0, 0, 2, 8, 2);
-	createRigidBody(200, 10, 0, 0, 0, 0, 2, 8, 2);
-}
-
 //The acutal main
 void main2() {
 
@@ -115,27 +102,34 @@ void main2() {
 	}
 	
 	uint32_t frame = 0;
-	Renderer renderer(0,0,320,528); // x,y,w,h
+	Renderer renderer(0,0,140,528); // x,y,w,h
+
+	renderer.particleManager->createParticle(10, 10, 0, 0, 2);
+	renderer.particleManager->createParticle(40, 10, 0, 0, 2);
+	renderer.particleManager->createParticle(70, 10, 0, 0, 2);
+
+	renderer.rigidBodyManager->createRigidBody(100, 10, 0, 0, 0, 0, 2, 8, 2);
+	renderer.rigidBodyManager->createRigidBody(150, 10, 0, 0, 0, 0, 2, 8, 2);
+	renderer.rigidBodyManager->createRigidBody(200, 10, 0, 0, 0, 0, 2, 8, 2);
+
+	renderer.rectangleManager->createRectangle(50,50,100,52,color(255,0,0));
 
 	// Add event listeners
 	addListener(KEY_BACKSPACE, toggleDebug); // toggle debug mode
 	addListener(KEY_CLEAR, endGame); // end the game
 
 	// 3D Camera controls
-   	addListener(KEY_LEFT, camXDecrease);
-	addListener(KEY_RIGHT, camXIncrease);
-	addListener2(KEY_UP, camYIncrease);
-	addListener2(KEY_DOWN, camYDecrease);
-	addListener(KEY_ADD, camZIncrease);
-	addListener(KEY_SUBTRACT, camZDecrease);
-	addListener(KEY_6, camAIncrease);
-	addListener2(KEY_4, camADecrease);
-	addListener2(KEY_8, camBIncrease);
-	addListener2(KEY_2, camBDecrease);
+   	addListener(KEY_LEFT, camXDecrease, true);
+	addListener(KEY_RIGHT, camXIncrease, true);
+	addListener2(KEY_UP, camYIncrease, true);
+	addListener2(KEY_DOWN, camYDecrease, true);
+	addListener(KEY_ADD, camZIncrease, true);
+	addListener(KEY_SUBTRACT, camZDecrease, true);
+	addListener(KEY_6, camAIncrease, true);
+	addListener2(KEY_4, camADecrease, true);
+	addListener2(KEY_8, camBIncrease, true);
+	addListener2(KEY_2, camBDecrease, true);
 	addListener2(KEY_5, toggleSprint);
-
-	// Particle Sim
-	addListener2(KEY_EQUALS, runParticleSim);
 
 	// Save files
 	addListener2(KEY_X, load);
@@ -143,15 +137,21 @@ void main2() {
 
 	while (game_running) {
 		frame++;
-		fillScreen(color(22, 22, 22));
+		fillScreen(color(0, 0, 64));
 		checkEvents();
 		
+
+		// Debug_Printf(25,30,true,0,"Float: %f",1.4); needs --withmultilib=m4-nofpu in gcc and --m4a-nofpu in makefile
+
+		/*
+		cube(10,10,10,30,color(0,255,0));//The innner cube
+		cube(0,0,20,50,color(255,0,0));//The outer cube
+		triangle( 0,0,0, 50,0,0, 0,50,50, color(255,128,128),color(255,0,0));//The triangle
+		*/
+
+		renderer.rectangleManager->renderRectangles();
 		renderer.render();
 
-		Debug_Printf(25,30,true,0,"Float: %f",1.4);
-
-		cube(10,10,10,30,color(0,255,0));//The innner cube
-		cube(0,0,20,50,color(255,0,0));//The outer  cube
 
 		debugger(frame);
 		LCD_Refresh();
