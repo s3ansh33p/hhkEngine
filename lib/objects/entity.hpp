@@ -19,8 +19,8 @@ public:
     int id;
     int x;
     int y;
-    int color;
-    void create(int x, int y, int color);
+    uint16_t color;
+    void create(int x, int y, uint16_t color);
     void remove();
 };
 
@@ -28,7 +28,7 @@ public:
 Entity entities[MAX_ENTITIES];
 
 // Create the entity
-void Entity::create(int x, int y, int color) {
+void Entity::create(int x, int y, uint16_t color) {
     this->x = x;
     this->y = y;
     this->color = color;

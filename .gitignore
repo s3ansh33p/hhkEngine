@@ -1,6 +1,10 @@
 # Ignore make files
+start.o
 main.o
 calc.o
 div.o
 hhkengine.hhk
 _hhkengine.elf
+
+# Ignore workplace files
+settings.json

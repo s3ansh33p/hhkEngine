@@ -118,8 +118,9 @@ void main2() {
 	renderer.rigidBodyManager->createRigidBody(150, 10, 0, 0, 0, 0, 2, 8, 2);
 	renderer.rigidBodyManager->createRigidBody(200, 10, 0, 0, 0, 0, 2, 8, 2);
 
-	Rectangle rect;
-	rect.createRectangle(50,50,100,52,color(255,20,80));
+	Rectangle rects[2];
+	rects[0].createRectangle(50,50,100,52,color(255,20,80));
+	rects[1].createRectangle(100,290,200,50000,color(255,255,255));
 
 	// Add event listeners
 	addListener(KEY_BACKSPACE, toggleDebug); // toggle debug mode
@@ -169,7 +170,9 @@ void main2() {
 		Debug_Printf(1,20,true,0,"RNG: %i",rng.m_x);
 
 		// will need to refactor further
-		rect.render(renderer.rendererX, renderer.rendererY, renderer.rendererWidth, renderer.rendererHeight);
+		for (int i=0; i<2; i++) {
+			rects[i].render(renderer.rendererX, renderer.rendererY, renderer.rendererWidth, renderer.rendererHeight);
+		}
 		renderer.render();
 
 		debugger(frame);
