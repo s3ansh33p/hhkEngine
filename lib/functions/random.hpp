@@ -10,18 +10,11 @@ class RandomGenerator {
 void RandomGenerator::SetSeed(uint32_t seed)
 {
     this->m_x = seed;
-    this->m_mul = (1566083941 << 32) + 1812433253;
-    this->m_add = 2531011;
+    this->m_mul = 893457621;
+    this->m_add = 198349821;
 }
 
-uint32_t RandomGenerator::Generate(uint32_t max) {
-    this->m_x = this->m_mul * this->m_x + this->m_add;
-    if (max == 0)
-    {
-        return int(this->m_x >> 32);
-    }
-    else
-    {
-        return int(this->m_x >> 32) % max;
-    }
+uint32_t RandomGenerator::Generate(uint32_t max = 100) {
+    this->m_x = (this->m_mul * this->m_x + this->m_add) % max;
+    return this->m_x;
 }

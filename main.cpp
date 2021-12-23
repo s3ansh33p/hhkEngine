@@ -6,7 +6,7 @@
 #include "lib/core/save.hpp"
 #include "lib/core/debug.hpp"
 #include "lib/renderer.hpp"
-#include "lib/3d/3d.cpp"
+// #include "lib/3d/3d.cpp"
 #include "lib/functions/random.hpp"
 
 #ifndef PC
@@ -20,13 +20,14 @@
 bool game_running = true;
 
 // Sprint
-int sprint = 1;
+// int sprint = 1;
 
 // Ends the game and is called by the event handler
 void endGame() {
 	game_running = false;
 }
 
+/*
 void camXIncrease() {
 	camx += sprint;
    	Debug_Printf(25,31,true,0,"+Cam X: %i",camx);
@@ -84,14 +85,18 @@ void save() {
 void load() {
 	loadSave("save.sav");
 }
+*/
 
 //The acutal main
 void main2() {
 
+	/*
+	// 3D camera
 	camx = 25;
 	camy = -200;
 	camz = 25;
-	
+	*/
+
 	// load the textures and fonts
 	LOAD_FONT_PTR("fnt\\7x8", f_7x8);
 
@@ -103,7 +108,7 @@ void main2() {
 	}
 	
 	uint32_t frame = 0;
-	Renderer renderer(0,0,140,528); // x,y,w,h
+	Renderer renderer(10,10,150,400); // x,y,w,h
 
 	renderer.particleManager->createParticle(10, 10, 0, 0, 2);
 	renderer.particleManager->createParticle(40, 10, 0, 0, 2);
@@ -113,12 +118,14 @@ void main2() {
 	renderer.rigidBodyManager->createRigidBody(150, 10, 0, 0, 0, 0, 2, 8, 2);
 	renderer.rigidBodyManager->createRigidBody(200, 10, 0, 0, 0, 0, 2, 8, 2);
 
-	renderer.rectangleManager->createRectangle(50,50,100,52,color(255,0,0));
+	Rectangle rect;
+	rect.createRectangle(50,50,100,52,color(255,20,80));
 
 	// Add event listeners
 	addListener(KEY_BACKSPACE, toggleDebug); // toggle debug mode
 	addListener(KEY_CLEAR, endGame); // end the game
 
+	/*
 	// 3D Camera controls
    	addListener(KEY_LEFT, camXDecrease, true);
 	addListener(KEY_RIGHT, camXIncrease, true);
@@ -131,14 +138,16 @@ void main2() {
 	addListener2(KEY_8, camBIncrease, true);
 	addListener2(KEY_2, camBDecrease, true);
 	addListener2(KEY_5, toggleSprint);
+	*/
 
+	/*
 	// Save files
 	addListener2(KEY_X, load);
 	addListener2(KEY_Y, save);
-
+	*/
 
 	RandomGenerator rng;
-	rng.SetSeed(182);
+	rng.SetSeed(12345);
 	
 	while (game_running) {
 		frame++;
@@ -153,15 +162,15 @@ void main2() {
 		cube(0,0,20,50,color(255,0,0));//The outer cube
 		triangle( 0,0,0, 50,0,0, 0,50,50, color(255,128,128),color(255,0,0));//The triangle
 		*/
+		
 
-		rng.Generate(50);
+		rng.Generate(1000);
 		
 		Debug_Printf(1,20,true,0,"RNG: %i",rng.m_x);
 
-
-		renderer.rectangleManager->renderRectangles();
+		// will need to refactor further
+		rect.render(renderer.rendererX, renderer.rendererY, renderer.rendererWidth, renderer.rendererHeight);
 		renderer.render();
-
 
 		debugger(frame);
 		LCD_Refresh();

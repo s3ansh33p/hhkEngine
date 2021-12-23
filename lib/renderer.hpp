@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "objects/entityManager.hpp"
 #include "objects/particle.hpp"
 #include "objects/rigidbody.hpp"
 #include "objects/rectangle.hpp"
@@ -16,15 +17,14 @@
 class Renderer {
     public:
     
-    int x = 0;              // x position of the renderer
-    int y = 0;              // y position of the renderer
-    int width = 0;          // width of the window
-    int height = 0;         // height of the window
+    int rendererX = 0;      // x position of the renderer
+    int rendererY = 0;      // y position of the renderer
+    int rendererWidth = 0;  // width of the window
+    int rendererHeight = 0; // height of the window
     int currentTime = 0;    // current time of the renderer
     int deltaTime = 1;      // time (in seconds) for each step
 	ParticleManager *particleManager = new ParticleManager();
     RigidBodyManager *rigidBodyManager = new RigidBodyManager();
-    RectangleManager *rectangleManager = new RectangleManager();
 
     /**
      * Create a new renderer
@@ -34,11 +34,10 @@ class Renderer {
      * @param height The height of the renderer
      */
     Renderer(int x, int y, int width, int height) {
-        this->x = x;
-        this->y = y;
-        this->width = width;
-        this->height = height;    
-        this->rectangleManager->setRenderDimensions(x, y, width, height);
+        this->rendererX = x;
+        this->rendererY = y;
+        this->rendererWidth = width;
+        this->rendererHeight = height;    
     }
 
     // Time functions
@@ -56,11 +55,11 @@ class Renderer {
 
     // Dimensions functions
     int getWidth() {
-        return this->width;
+        return this->rendererWidth;
     }
 
     int getHeight() {
-        return this->height;
+        return this->rendererHeight;
     }
 
     // Render function
@@ -84,13 +83,13 @@ class Renderer {
         }
 
         // Tmp
-        Debug_Printf(4,40,true,0,"Renderer (%i, %i) %ix%i", this->x, this->y, this->width, this->height);
+        Debug_Printf(4,40,true,0,"Renderer (%i, %i) %ix%i", this->rendererX, this->rendererY, this->rendererWidth, this->rendererHeight);
 
         // Outline renderer
-        line(this->x,this->y,this->x + this->width,this->y,color(255,255,0));
-        line(this->x,this->y + this->height,this->x + this->width,this->y + this->height,color(255,255,0));
-        line(this->x,this->y,this->x,this->y + this->height,color(255,255,0));
-        line(this->x + width,this->y,this->x + this->width,this->y + this->height,color(255,255,0));
+        line(this->rendererX, this->rendererY, this->rendererX, this->rendererY + this->rendererHeight, color(255,255,0));
+        line(this->rendererX, this->rendererY, this->rendererX + this->rendererWidth, this->rendererY, color(255,255,0));
+        line(this->rendererX + this->rendererWidth, this->rendererY, this->rendererX + this->rendererWidth, this->rendererY + this->rendererHeight, color(255,255,0));
+        line(this->rendererX, this->rendererY + this->rendererHeight, this->rendererX + this->rendererWidth, this->rendererY + this->rendererHeight, color(255,255,0));
     };
 
 };
