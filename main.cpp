@@ -7,7 +7,7 @@
 #include "lib/core/debug.hpp"
 #include "lib/renderer.hpp"
 // #include "lib/3d/3d.cpp"
-#include "lib/functions/random.hpp"
+// #include "lib/functions/random.hpp"
 
 #ifndef PC
 	APP_NAME("HHK Game Engine")
@@ -108,19 +108,24 @@ void main2() {
 	}
 	
 	uint32_t frame = 0;
+
 	Renderer renderer(10,10,150,400); // x,y,w,h
 
-	renderer.particleManager->createParticle(10, 10, 0, 0, 2);
-	renderer.particleManager->createParticle(40, 10, 0, 0, 2);
-	renderer.particleManager->createParticle(70, 10, 0, 0, 2);
+	renderer.rectangles[typeCounter[0]].createRectangle(50,50,100,52,color(255,20,80));
+	renderer.rectangles[typeCounter[0]].createRectangle(55,265,200,500,color(255,255,90));
+	renderer.rectangles[typeCounter[0]].createRectangle(60,270,200,500,color(255,255,125));
+	renderer.rectangles[typeCounter[0]].createRectangle(65,275,200,500,color(255,255,160));
+	renderer.rectangles[typeCounter[0]].createRectangle(70,280,200,500,color(255,255,195));
+	renderer.rectangles[typeCounter[0]].createRectangle(75,285,200,500,color(255,255,220));
+	renderer.rectangles[typeCounter[0]].createRectangle(80,290,200,500,color(255,255,255));
 
-	renderer.rigidBodyManager->createRigidBody(100, 10, 0, 0, 0, 0, 2, 8, 2);
-	renderer.rigidBodyManager->createRigidBody(150, 10, 0, 0, 0, 0, 2, 8, 2);
-	renderer.rigidBodyManager->createRigidBody(200, 10, 0, 0, 0, 0, 2, 8, 2);
+	renderer.particles[typeCounter[1]].createParticle(20,10,0,0,2,color(255,255,255));
+	renderer.particles[typeCounter[1]].createParticle(40,10,0,0,2,color(255,255,255));
+	renderer.particles[typeCounter[1]].createParticle(60,10,0,0,2,color(255,255,255));
+	renderer.particles[typeCounter[1]].createParticle(80,10,0,0,2,color(255,255,255));
 
-	Rectangle rects[2];
-	rects[0].createRectangle(50,50,100,52,color(255,20,80));
-	rects[1].createRectangle(100,290,200,50000,color(255,255,255));
+	renderer.rigidbodies[typeCounter[2]].createRigidBody(50, 10, 0, 0, 0, 0, 2, 8, 2, color(255, 0, 0));
+	renderer.rigidbodies[typeCounter[2]].createRigidBody(100, 10, 0, 0, 0, 0, 2, 8, 2, color(255, 0, 0));
 
 	// Add event listeners
 	addListener(KEY_BACKSPACE, toggleDebug); // toggle debug mode
@@ -147,9 +152,11 @@ void main2() {
 	addListener2(KEY_Y, save);
 	*/
 
+	/*
 	RandomGenerator rng;
 	rng.SetSeed(12345);
-	
+	*/
+
 	while (game_running) {
 		frame++;
 		fillScreen(color(0, 0, 64));
@@ -164,15 +171,11 @@ void main2() {
 		triangle( 0,0,0, 50,0,0, 0,50,50, color(255,128,128),color(255,0,0));//The triangle
 		*/
 		
-
-		rng.Generate(1000);
-		
+		/*
+		rng.Generate(1000);	
 		Debug_Printf(1,20,true,0,"RNG: %i",rng.m_x);
+		*/
 
-		// will need to refactor further
-		for (int i=0; i<2; i++) {
-			rects[i].render(renderer.rendererX, renderer.rendererY, renderer.rendererWidth, renderer.rendererHeight);
-		}
 		renderer.render();
 
 		debugger(frame);

@@ -3,7 +3,7 @@
  * @author Sean McGinty (newfolderlocation@gmail.com)
  * @brief Rectangle class for the engine
  * @version 1.1
- * @date 2021-12-23
+ * @date 2021-12-29
  */
 
 #pragma once
@@ -20,7 +20,7 @@ class Rectangle: public Entity {
 
 // Create a rectangle given a position, dimensions, and color.
 void Rectangle::createRectangle(int x, int y, int width, int height, int color) {
-    this->create(x, y, color);
+    this->create(x, y, color, 0);
     this->x = x;
     this->y = y;
     this->width = width;

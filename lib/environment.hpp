@@ -12,7 +12,7 @@
 #include "objects/vector.hpp"
 
 // Physical constants
-int GRAVITY = -10; // gravity that is applied to all objects
+int GRAVITY = 2; // gravity that is applied to all objects
 
 // Engine settings
 const int MAX_ENTITIES = 30; // max number of entities
