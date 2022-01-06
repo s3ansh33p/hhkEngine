@@ -66,6 +66,24 @@ class Renderer {
         line(this->rendererX, this->rendererY + this->rendererHeight, this->rendererX + this->rendererWidth, this->rendererY + this->rendererHeight, color(255,255,0));
     };
 
+    // Add a rectangle to the renderer
+    void addRectangle(int x, int y, int width, int height, uint16_t color) {
+        this->rectangles[typeCounter[0]].createRectangle(x, y, width, height, color);
+        typeCounter[0]++;
+    }
+
+    // Add a particle to the renderer
+    void addParticle(int x, int y, int vx, int vy, int mass, int color) {
+        this->particles[typeCounter[1]].createParticle(x, y, vx, vy, mass, color);
+        typeCounter[1]++;
+    }
+
+    // Add a rigidbody to the renderer
+    void addRigidBody(int x, int y, int vx, int vy, int angle, int av, int width, int height, int mass, int color) {
+        this->rigidbodies[typeCounter[2]].createRigidBody(x, y, vx, vy, angle, av, width, height, mass, color);
+        typeCounter[2]++;
+    }
+
 };
 
 

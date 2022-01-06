@@ -111,21 +111,24 @@ void main2() {
 
 	Renderer renderer(10,10,150,400); // x,y,w,h
 
+	// renderer.addRectangle(50,50,100,52,color(255,20,80));
+	// renderer.addRectangle(55,265,200,500,color(255,255,90));
+	// renderer.addRectangle(60,270,200,500,color(255,255,125));
+	// renderer.addRectangle(65,275,200,500,color(255,255,160));
+	// renderer.addRectangle(70,280,200,500,color(255,255,195));
+	// renderer.addRectangle(75,285,200,500,color(255,255,220));
+	// renderer.addRectangle(80,290,200,500,color(255,255,255));
+
+	// renderer.addRectangle(50,50,100,52,color(255,20,80)); // does not work for some reason??
 	renderer.rectangles[typeCounter[0]].createRectangle(50,50,100,52,color(255,20,80));
-	renderer.rectangles[typeCounter[0]].createRectangle(55,265,200,500,color(255,255,90));
-	renderer.rectangles[typeCounter[0]].createRectangle(60,270,200,500,color(255,255,125));
-	renderer.rectangles[typeCounter[0]].createRectangle(65,275,200,500,color(255,255,160));
-	renderer.rectangles[typeCounter[0]].createRectangle(70,280,200,500,color(255,255,195));
-	renderer.rectangles[typeCounter[0]].createRectangle(75,285,200,500,color(255,255,220));
-	renderer.rectangles[typeCounter[0]].createRectangle(80,290,200,500,color(255,255,255));
+	typeCounter[0]++;
+	// renderer.addParticle(20,10,0,0,2,color(255,255,255));
+	// renderer.addParticle(40,10,0,0,2,color(255,255,255));
+	// renderer.addParticle(60,10,0,0,2,color(255,255,255));
+	// renderer.addParticle(80,10,0,0,2,color(255,255,255));
 
-	renderer.particles[typeCounter[1]].createParticle(20,10,0,0,2,color(255,255,255));
-	renderer.particles[typeCounter[1]].createParticle(40,10,0,0,2,color(255,255,255));
-	renderer.particles[typeCounter[1]].createParticle(60,10,0,0,2,color(255,255,255));
-	renderer.particles[typeCounter[1]].createParticle(80,10,0,0,2,color(255,255,255));
-
-	renderer.rigidbodies[typeCounter[2]].createRigidBody(50, 10, 0, 0, 0, 0, 2, 8, 2, color(255, 0, 0));
-	renderer.rigidbodies[typeCounter[2]].createRigidBody(100, 10, 0, 0, 0, 0, 2, 8, 2, color(255, 0, 0));
+	// renderer.addRigidBody(40, 10, 0, 0, 0, 0, 2, 8, 2, color(255, 0, 0));
+	// renderer.addRigidBody(100, 10, 0, 0, 0, 0, 2, 8, 2, color(255, 0, 0));
 
 	// Add event listeners
 	addListener(KEY_BACKSPACE, toggleDebug); // toggle debug mode
