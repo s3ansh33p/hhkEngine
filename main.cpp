@@ -165,8 +165,14 @@ void main2() {
 		fillScreen(color(0, 0, 64));
 		checkEvents();
 		
-
-		// Debug_Printf(25,30,true,0,"Float: %f",1.4); needs --withmultilib=m4-nofpu in gcc and --m4a-nofpu in makefile
+		float f1 = 12312/123;
+		float f2 = 12312/9382;
+		float f3 = f1+f2;
+		Debug_Printf(25,26,true,0,"Float: %f",f1);
+		Debug_Printf(25,27,true,0,"Float: %f",f2);
+		Debug_Printf(25,28,true,0,"Float: %f",1.12312);
+		Debug_Printf(25,29,true,0,"Float: %f",f3/23);
+		Debug_Printf(25,30,true,0,"Float: %f",f3); // needs --withmultilib=m4-nofpu in gcc and --m4a-nofpu in makefile
 
 		/*
 		cube(10,10,10,30,color(0,255,0));//The innner cube
