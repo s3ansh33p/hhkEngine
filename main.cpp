@@ -6,6 +6,7 @@
 #include "lib/core/save.hpp"
 #include "lib/core/debug.hpp"
 #include "lib/renderer.hpp"
+#include "lib/objects/circle.hpp"
 // #include "lib/3d/3d.cpp"
 // #include "lib/functions/random.hpp"
 
@@ -160,19 +161,31 @@ void main2() {
 	rng.SetSeed(12345);
 	*/
 
+		volatile float float1 = 1.0f;
+    volatile float float2 = 1.0f;
+    volatile float float3 = 1.0f;
+    volatile float float4 = 1.0f;
+
 	while (game_running) {
 		frame++;
 		fillScreen(color(0, 0, 64));
 		checkEvents();
 		
-		float f1 = 12312/123;
-		float f2 = 12312/9382;
-		float f3 = f1+f2;
-		Debug_Printf(25,26,true,0,"Float: %f",f1);
-		Debug_Printf(25,27,true,0,"Float: %f",f2);
 		Debug_Printf(25,28,true,0,"Float: %f",1.12312);
-		Debug_Printf(25,29,true,0,"Float: %f",f3/23);
-		Debug_Printf(25,30,true,0,"Float: %f",f3); // needs --withmultilib=m4-nofpu in gcc and --m4a-nofpu in makefile
+
+		// drawCircle(100,100,50);
+		drawCircle(100,100,50, color(255,255,000));
+
+
+        float1 += 0.1f;
+        float2 *= 1.1f;
+        float3 /= 0.9f;
+        float4 -= 0.1f;
+            
+        Debug_Printf(2,27,true,0,"Float1 +0.1f: %f", float1);
+        Debug_Printf(2,28,true,0,"Float2 *1.1f: %f", float2);
+        Debug_Printf(2,29,true,0,"Float3 /0.9f: %f", float3);
+        Debug_Printf(2,30,true,0,"Float4 -0.1f: %f", float4);
 
 		/*
 		cube(10,10,10,30,color(0,255,0));//The innner cube
