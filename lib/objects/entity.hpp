@@ -13,7 +13,7 @@
 
 int entityCount = 0;
 int entityIDCounter = 0;
-int typeCounter[3] = {0, 0, 0};
+int typeCounter[4] = {0, 0, 0, 0};
 
 class Entity {
 public:
@@ -33,6 +33,7 @@ Entity entities[MAX_ENTITIES];
  0 = RECTANGLE
  1 = PARTICLE
  2 = RIGIDBODY
+ 3 = CIRCLE
 */
 
 // Create the entity

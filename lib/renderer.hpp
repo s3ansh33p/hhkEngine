@@ -11,6 +11,7 @@
 #include "objects/particle.hpp"
 #include "objects/rigidbody.hpp"
 #include "objects/rectangle.hpp"
+#include "objects/circle.hpp"
 #include "../calc.hpp"
 
 class Renderer {
@@ -25,6 +26,7 @@ class Renderer {
     Rectangle rectangles[MAX_RECTANGLES];   // array of rectangles
     Particle particles[MAX_PARTICLES];      // array of particles
     RigidBody rigidbodies[MAX_RIGIDBODIES]; // array of rigidbodies
+    Circle circles[MAX_CIRCLES];            // array of circles
 
     /**
      * Create a new renderer
@@ -55,6 +57,9 @@ class Renderer {
         for (int i = 0; i<typeCounter[2]; i++) {
             this->rigidbodies[i].render(this->deltaTime, this->rendererX, this->rendererY, this->rendererWidth, this->rendererHeight);
         }
+        for (int i = 0; i<typeCounter[3]; i++) {
+            this->circles[i].render(this->rendererX, this->rendererY, this->rendererWidth, this->rendererHeight);
+        }
 
         // Tmp
         Debug_Printf(4,40,true,0,"Renderer (%i, %i) %ix%i", this->rendererX, this->rendererY, this->rendererWidth, this->rendererHeight);
@@ -82,6 +87,12 @@ class Renderer {
     void addRigidBody(int x, int y, int vx, int vy, int angle, int av, int width, int height, int mass, int color) {
         this->rigidbodies[typeCounter[2]].createRigidBody(x, y, vx, vy, angle, av, width, height, mass, color);
         typeCounter[2]++;
+    }
+
+    // Add a circle to the renderer
+    void addCircle(int x, int y, int radius, int color) {
+        this->circles[typeCounter[3]].createCircle(x, y, radius, color);
+        typeCounter[3]++;
     }
 
 };

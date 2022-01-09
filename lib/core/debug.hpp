@@ -26,9 +26,9 @@ void debugger(uint32_t frame) {
     if(DEBUG){
         int i = 0; while (i<(width*12*3)) vram[i++]=0; //clear the top 3 lines
         Debug_Printf(0,0,true,0,"FRAME");
-        // E = Entities, R = Rectangles, P = Particles, RB = RigidBodies US = Usage (out of max entities)
-        int totalEnts = typeCounter[0] + typeCounter[1] + typeCounter[2];
-		Debug_Printf(7,0,true,0,"E %i R %i P %i RB %i US %4d% \%",totalEnts,typeCounter[0], typeCounter[1], typeCounter[2], ((totalEnts*100+MAX_ENTITIES/2)/MAX_ENTITIES));
+        // E = Entities, R = Rectangles, P = Particles, RB = RigidBodies C = Circles US = Usage (out of max entities)
+        int totalEnts = typeCounter[0] + typeCounter[1] + typeCounter[2] + typeCounter[3];
+		Debug_Printf(7,0,true,0,"E %i R %i P %i RB %i C %i US %4d% \%",totalEnts,typeCounter[0], typeCounter[1], typeCounter[2], typeCounter[3], ((totalEnts*100+MAX_ENTITIES/2)/MAX_ENTITIES));
         Debug_Printf(0,1,true,0,"%05d", frame);
         Debug_Printf(7,1,true,0,"Mem %8d",memUsed);
         Debug_Printf(20,1,true,0,"Fonts %01d",fLoaded);

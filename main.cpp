@@ -5,8 +5,8 @@
 #include "lib/core/event_handler.hpp"
 #include "lib/core/save.hpp"
 #include "lib/core/debug.hpp"
+#include "lib/core/tile_handler.hpp"
 #include "lib/renderer.hpp"
-#include "lib/objects/circle.hpp"
 // #include "lib/3d/3d.cpp"
 // #include "lib/functions/random.hpp"
 
@@ -122,7 +122,17 @@ void main2() {
 
 	// renderer.addRectangle(50,50,100,52,color(255,20,80)); // does not work for some reason??
 	renderer.rectangles[typeCounter[0]].createRectangle(50,50,100,52,color(255,20,80));
-	typeCounter[0]++;
+
+	renderer.circles[typeCounter[3]].createCircle(80,80,10,color(255,0,40));
+	renderer.circles[typeCounter[3]].createCircle(90,90,10,color(255,0,80));
+	renderer.circles[typeCounter[3]].createCircle(100,100,10,color(255,0,120));
+	renderer.circles[typeCounter[3]].createCircle(110,110,10,color(255,0,160));
+	renderer.circles[typeCounter[3]].createCircle(120,120,10,color(255,0,200));
+	renderer.circles[typeCounter[3]].createCircle(130,130,10,color(255,0,255));
+	renderer.circles[typeCounter[3]].createCircle(140,140,10,color(255,40,255));
+	renderer.circles[typeCounter[3]].createCircle(150,150,10,color(255,80,255));
+	renderer.circles[typeCounter[3]].createCircle(160,160,10,color(255,120,255));
+
 	// renderer.addParticle(20,10,0,0,2,color(255,255,255));
 	// renderer.addParticle(40,10,0,0,2,color(255,255,255));
 	// renderer.addParticle(60,10,0,0,2,color(255,255,255));
@@ -161,7 +171,10 @@ void main2() {
 	rng.SetSeed(12345);
 	*/
 
-		volatile float float1 = 1.0f;
+	TileManager tileManager;
+	tileManager.Init();
+
+	volatile float float1 = 1.0f;
     volatile float float2 = 1.0f;
     volatile float float3 = 1.0f;
     volatile float float4 = 1.0f;
@@ -173,9 +186,7 @@ void main2() {
 		
 		Debug_Printf(25,28,true,0,"Float: %f",1.12312);
 
-		// drawCircle(100,100,50);
-		drawCircle(100,100,50, color(255,255,000));
-
+		tileManager.DrawTiles(10,10);
 
         float1 += 0.1f;
         float2 *= 1.1f;
