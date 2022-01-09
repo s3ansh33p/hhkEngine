@@ -174,29 +174,31 @@ void main2() {
 	TileManager tileManager;
 	tileManager.Init();
 
-	volatile float float1 = 1.0f;
-    volatile float float2 = 1.0f;
-    volatile float float3 = 1.0f;
-    volatile float float4 = 1.0f;
+	// volatile float float1 = 1.0f;
+    // volatile float float2 = 1.0f;
+    // volatile float float3 = 1.0f;
+    // volatile float float4 = 1.0f;
+
+	// will need to write docs at some point
 
 	while (game_running) {
 		frame++;
 		fillScreen(color(0, 0, 64));
 		checkEvents();
 		
-		Debug_Printf(25,28,true,0,"Float: %f",1.12312);
+		// Debug_Printf(25,28,true,0,"Float: %f",1.12312);
 
 		tileManager.DrawTiles(10,10);
 
-        float1 += 0.1f;
-        float2 *= 1.1f;
-        float3 /= 0.9f;
-        float4 -= 0.1f;
+        // float1 += 0.1f;
+        // float2 *= 1.1f;
+        // float3 /= 0.9f;
+        // float4 -= 0.1f;
             
-        Debug_Printf(2,27,true,0,"Float1 +0.1f: %f", float1);
-        Debug_Printf(2,28,true,0,"Float2 *1.1f: %f", float2);
-        Debug_Printf(2,29,true,0,"Float3 /0.9f: %f", float3);
-        Debug_Printf(2,30,true,0,"Float4 -0.1f: %f", float4);
+        // Debug_Printf(2,27,true,0,"Float1 +0.1f: %f", float1);
+        // Debug_Printf(2,28,true,0,"Float2 *1.1f: %f", float2);
+        // Debug_Printf(2,29,true,0,"Float3 /0.9f: %f", float3);
+        // Debug_Printf(2,30,true,0,"Float4 -0.1f: %f", float4);
 
 		/*
 		cube(10,10,10,30,color(0,255,0));//The innner cube

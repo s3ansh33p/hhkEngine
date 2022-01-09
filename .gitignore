@@ -3,8 +3,8 @@ start.o
 main.o
 calc.o
 div.o
-hhkengine.hhk
 _hhkengine.elf
+# hhkengine.hhk
 
 # Ignore workplace files
 settings.json

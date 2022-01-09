@@ -20,12 +20,12 @@ struct Tile
 const int TILE_WIDTH = 16;
 const int TILE_HEIGHT = 16;
 
-const int TILE_COUNT_X = 2;
+const int TILE_COUNT_X = 4;
 const int TILE_COUNT_Y = 2;
 
 const int TILE_MAX = TILE_COUNT_X * TILE_COUNT_Y;
 
-const int TILESET_MAX = 1;
+const int TILESET_MAX = 2;
 
 class TileManager {
 public:
@@ -39,8 +39,8 @@ public:
 
 void TileManager::Init() {
     int map[TILE_MAX] = {
-        1,1,
-        1,0
+        2,2,2,1,
+        1,0,0,1
     };
     // set the map to myMap
     for (int i = 0; i < TILE_MAX; i++) {
@@ -49,10 +49,11 @@ void TileManager::Init() {
 
     // set the tileset
     LOAD_TEXTURE_PTR("tile1", tile1);
-    // LOAD_TEXTURE_PTR("tile2", tile2);
+    LOAD_TEXTURE_PTR("tile2", tile2);
 
     Tile tileset[TILESET_MAX] = {
-        {tile1, true}
+        {tile1, true},
+        {tile2, true}
     };
 
     for (int i = 0; i < TILESET_MAX; i++) {
