@@ -47,4 +47,15 @@ void debugger(uint32_t frame) {
 
 void toggleDebug() {
     DEBUG=!DEBUG;
+
+    // this initial implementation assumes that the tile size is
+    // 16x16 and the tiles start at the top left of the screen
+    if (isTileManagerActive) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < TILE_COUNT_X; j++) {
+                // set the cell hasUpdate to true
+                tile_manager_pointer->map[(i*TILE_COUNT_X) + j].hasUpdate = true;
+            }
+        }
+    }
 }

@@ -16,12 +16,18 @@ struct Tile
     bool isSolid;   
 };
 
+struct Cell
+{
+    int tileID;
+    bool hasUpdate;
+};
+
 // Tiles must be 16x16 pixels.
 const int TILE_WIDTH = 16;
 const int TILE_HEIGHT = 16;
 
-const int TILE_COUNT_X = 4;
-const int TILE_COUNT_Y = 2;
+const int TILE_COUNT_X = 20;
+const int TILE_COUNT_Y = 33;
 
 const int TILE_MAX = TILE_COUNT_X * TILE_COUNT_Y;
 
@@ -30,21 +36,55 @@ const int TILESET_MAX = 2;
 class TileManager {
 public:
     Tile tileset[TILESET_MAX];
-    int map[TILE_MAX];
+    Cell map[TILE_MAX];
     void DrawTiles(int x, int y);
     void Init();
     const Tile& GetTile(int x, int y);
     bool IsTileSolid(int x, int y);
 };
-
+// 320 × 528
 void TileManager::Init() {
     int map[TILE_MAX] = {
-        2,2,2,1,
-        1,0,0,1
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
+        1,2,1,1,2,1,2,1,2,2,2,2,2,1,1,2,1,1,1,1,
+        1,2,1,1,2,1,2,1,2,2,2,2,2,1,1,2,1,1,1,1,
+        1,2,1,1,2,1,2,1,2,2,2,2,2,1,1,2,1,1,1,1,
+        1,2,1,1,2,1,2,1,2,2,2,2,2,1,1,2,1,1,1,1,
+        1,2,1,1,2,1,2,1,2,2,2,2,2,1,1,2,1,1,1,1,
+        1,2,1,1,2,1,2,1,2,2,2,2,2,1,1,2,1,1,1,1,
+        1,2,1,1,2,1,2,1,2,2,2,2,2,1,1,2,1,1,1,1,
+        1,2,1,1,2,1,2,1,2,2,2,2,2,1,1,2,1,1,1,1,
+        1,2,1,1,2,1,2,1,2,2,2,2,2,1,1,2,1,1,1,1,
+        1,2,1,1,2,1,2,1,2,2,2,2,2,1,1,2,1,1,1,1
     };
     // set the map to myMap
     for (int i = 0; i < TILE_MAX; i++) {
-        this->map[i] = map[i];
+        this->map[i] = {
+            map[i],
+            true
+        };
     }
 
     // set the tileset
@@ -59,11 +99,12 @@ void TileManager::Init() {
     for (int i = 0; i < TILESET_MAX; i++) {
         this->tileset[i] = tileset[i];
     }
-
+    // set isActive to true
+    isTileManagerActive = true;
 }
 
 const Tile& TileManager::GetTile(int x, int y) {
-    return this->tileset[ this->map[ (y*TILE_COUNT_Y) + x ] ];
+    return this->tileset[ this->map[ (y*TILE_COUNT_Y) + x ].tileID ];
 }
 
 bool TileManager::IsTileSolid(int x, int y) {
@@ -78,14 +119,21 @@ void TileManager::DrawTiles(int x, int y)
         for (int tileX = 0; tileX < TILE_COUNT_X; tileX++)
         {
             int tileIndex = (tileY * TILE_COUNT_X) + tileX;
-            if (map[tileIndex] != 0)
-            {
-                int drawX = (x + (tileX * TILE_WIDTH));
-                int drawY = (y + (tileY * TILE_HEIGHT));
-                // remder the tile sprite
-                DRAW_TEXTURE(tileset[map[tileIndex]-1].texture, drawX, drawY);
-
+            if (map[tileIndex].tileID != 0) {
+                if (map[tileIndex].hasUpdate) {
+                    int drawX = (x + (tileX * TILE_WIDTH));
+                    int drawY = (y + (tileY * TILE_HEIGHT));
+                    // remder the tile sprite
+                    DRAW_TEXTURE(tileset[map[tileIndex].tileID-1].texture, drawX, drawY);
+                    map[tileIndex].hasUpdate = false;
+                }
             }
         }
     }
 }
+
+// determines if the TileManager is active
+bool isTileManagerActive = false;
+
+// pointer for the tile manager that gets created later on
+TileManager *tile_manager_pointer = nullptr;
