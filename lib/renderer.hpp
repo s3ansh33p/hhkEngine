@@ -84,30 +84,47 @@ class Renderer {
 
     // Add a rectangle to the renderer
     void addRectangle(int x, int y, int width, int height, uint16_t color) {
-        this->rectangles[typeCounter[0]].createRectangle(x, y, width, height, color);
-        typeCounter[0]++;
+        this->rectangles[typeCounter[0]].create(x, y, width, height, color);
     }
 
     // Add a particle to the renderer
     void addParticle(int x, int y, int vx, int vy, int mass, int color) {
-        this->particles[typeCounter[1]].createParticle(x, y, vx, vy, mass, color);
-        typeCounter[1]++;
+        this->particles[typeCounter[1]].create(x, y, vx, vy, mass, color);
     }
 
     // Add a rigidbody to the renderer
     void addRigidBody(int x, int y, int vx, int vy, int angle, int av, int width, int height, int mass, int color) {
-        this->rigidbodies[typeCounter[2]].createRigidBody(x, y, vx, vy, angle, av, width, height, mass, color);
-        typeCounter[2]++;
+        this->rigidbodies[typeCounter[2]].create(x, y, vx, vy, angle, av, width, height, mass, color);
     }
 
     // Add a circle to the renderer
     void addCircle(int x, int y, int radius, int color) {
-        this->circles[typeCounter[3]].createCircle(x, y, radius, color);
-        typeCounter[3]++;
+        this->circles[typeCounter[3]].create(x, y, radius, color);
+    }
+
+    // shift entities down - after removing an entity
+    void shiftEntities(int type) {
+        switch (type) {
+            case 0:
+                for (int i = 0; i < typeCounter[0]; i++) {
+                    this->rectangles[i] = this->rectangles[i + 1];
+                }
+            case 1:
+                for (int i = 0; i < typeCounter[1]; i++) {
+                    this->particles[i] = this->particles[i + 1];
+                }
+            case 2:
+                for (int i = 0; i < typeCounter[2]; i++) {
+                    this->rigidbodies[i] = this->rigidbodies[i + 1];
+                }
+            case 3:
+                for (int i = 0; i < typeCounter[3]; i++) {
+                    this->circles[i] = this->circles[i + 1];
+                }
+        }
     }
 
 };
 
 // pointer for the renderer that gets created later on
 Renderer *renderer_pointer = nullptr;
-

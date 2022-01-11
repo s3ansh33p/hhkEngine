@@ -33,24 +33,21 @@ void tmp() {
 		int rx = rng->Generate(280) + 20;
 		int ry = rng->Generate(480) + 20;
 		int r = rng->Generate(255);
-		int g = rng->Generate(255);
-		int b = rng->Generate(255);
-		renderer_pointer->circles[typeCounter[3]].createCircle(rx,ry,30,color(r,g,b));
+		renderer_pointer->addCircle(rx,ry,30,color(r,67,49));
 	}
 }
 
 void rm() {
 	if (typeCounter[3] != 0) {
-		renderer_pointer->circles[0].removeWithTiles();
+		renderer_pointer->circles[0].remove();
 	}
 }
 
 //The acutal main
 void main2() {
 
-	
 	RandomGenerator rngp;
-	rngp.SetSeed(8745968);
+	rngp.SetSeed(1337);
 	rng = &rngp;
 
 	/*
@@ -76,7 +73,7 @@ void main2() {
 	// set the pointer to the renderer
 	renderer_pointer = &renderer;
 
-	renderer.rectangles[typeCounter[0]].createRectangle(50,50,100,52,color(255,20,80));
+	renderer.rectangles[typeCounter[0]].create(50,50,100,52,color(255,20,80));
 
 	// renderer.circles[typeCounter[3]].createCircle(80,80,210,color(255,0,40));
 	// renderer.circles[typeCounter[3]].createCircle(90,90,210,color(255,0,80));

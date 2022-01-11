@@ -14,15 +14,15 @@ class Rectangle: public Entity {
     public:
         int width;
         int height;
-        void createRectangle(int x, int y, int width, int height, int color);
+        void create(int x, int y, int width, int height, int color);
         void render(int rendererX, int rendererY, int rendererWidth, int rendererHeight);
         void tileChecks();
-        void removeWithTiles();
+        void remove();
 };
 
 // Create a rectangle given a position, dimensions, and color.
-void Rectangle::createRectangle(int x, int y, int width, int height, int color) {
-    this->create(x, y, color, 0);
+void Rectangle::create(int x, int y, int width, int height, int color) {
+    this->createEnt(x, y, color, 0);
     this->x = x;
     this->y = y;
     this->width = width;
@@ -131,7 +131,7 @@ void Rectangle::tileChecks() {
 
 }
 
-void Rectangle::removeWithTiles() {
+void Rectangle::remove() {
 	this->hasUpdate = true;
 	this->tileChecks();
 	this->remove();

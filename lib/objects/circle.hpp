@@ -12,15 +12,15 @@
 class Circle: public Entity {
     public:
         int radius;
-        void createCircle(int x, int y, int radius, int color);
+        void create(int x, int y, int radius, int color);
         void render(int rendererX, int rendererY, int rendererWidth, int rendererHeight);
 		void tileChecks();
-		void removeWithTiles();
+		void remove();
 };
 
 // Create a circle given a position, radius, and color.
-void Circle::createCircle(int x, int y, int radius, int color) {
-    this->create(x, y, color, 3);
+void Circle::create(int x, int y, int radius, int color) {
+    this->createEnt(x, y, color, 3);
     this->x = x;
     this->y = y;
     this->radius = radius;
@@ -65,8 +65,8 @@ void Circle::tileChecks() {
 
 }
 
-void Circle::removeWithTiles() {
+void Circle::remove() {
 	this->hasUpdate = true;
 	this->tileChecks(); //tell the tiles in the circle to update after the circle is removed
-	this->remove();
+	this->removeEnt();
 }

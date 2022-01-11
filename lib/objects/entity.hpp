@@ -10,6 +10,7 @@
 
 #include "../environment.hpp"
 #include "../../calc.hpp"
+#include "../collision/collisions.hpp"
 
 int entityCount = 0;
 int entityIDCounter = 0;
@@ -23,7 +24,9 @@ public:
     int type;
     bool hasUpdate;
     uint16_t color;
+    void createEnt(int x, int y, uint16_t color, int type);
     void create(int x, int y, uint16_t color, int type);
+    void removeEnt();
     void remove();
 };
 
@@ -38,7 +41,7 @@ Entity entities[MAX_ENTITIES];
 */
 
 // Create the entity
-void Entity::create(int x, int y, uint16_t color, int type) {
+void Entity::createEnt(int x, int y, uint16_t color, int type) {
     this->x = x;
     this->y = y;
     this->color = color;
@@ -51,13 +54,22 @@ void Entity::create(int x, int y, uint16_t color, int type) {
     entityIDCounter++;
 }
 
+// place holder method "create" that is used in derived classes.
+void Entity::create(int x, int y, uint16_t color, int type) {
+    this->createEnt(x, y, color, type);
+}
 // Remove the entity from the array.
-void Entity::remove() {
+void Entity::removeEnt() {
     for (int i = this->id; i < entityCount; i++) {
         entities[i] = entities[i + 1];
     }
     entityCount--;
     typeCounter[this->type]--;
+}
+
+// place holder method "remove" that is used in derived classes.
+void Entity::remove() {
+    this->removeEnt();
 }
 
 // get all entities of a certain type

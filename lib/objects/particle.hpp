@@ -27,10 +27,11 @@ class Particle: public Entity {
         Vector2 velocity;
         int mass;
 
-        void createParticle(int x, int y, int vx, int vy, int mass, int color);
+        void create(int x, int y, int vx, int vy, int mass, int color);
         void render(int dt, int rendererX, int rendererY, int rendererWidth, int rendererHeight);
         void computeStep(int dt);
         Vector2 computeForce();
+        void remove();
 };
 
 void Particle::render(int dt, int rendererX, int rendererY, int rendererWidth, int rendererHeight) {
@@ -44,8 +45,8 @@ void Particle::render(int dt, int rendererX, int rendererY, int rendererWidth, i
 }
 
 // Create a particle given a position, velocity, mass and color
-void Particle::createParticle(int x, int y, int vx, int vy, int mass, int color) {
-    this->create(x, y, color, 1);
+void Particle::create(int x, int y, int vx, int vy, int mass, int color) {
+    this->createEnt(x, y, color, 1);
     this->x = x;
     this->y = y;
     this->velocity = Vector2{vx, vy};
@@ -66,4 +67,10 @@ void Particle::computeStep(int dt) {
     this->velocity.y += acceleration.y * dt;
     this->x += this->velocity.x * dt;
     this->y += this->velocity.y * dt;
+}
+
+void Particle::remove() {
+	this->hasUpdate = true;
+	// this->tileChecks(); // tba
+    this->removeEnt();
 }

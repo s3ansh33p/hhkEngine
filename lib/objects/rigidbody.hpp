@@ -41,10 +41,11 @@ class RigidBody: public Entity {
         int torque;
         BoxShape shape;
 
-        void createRigidBody(int x, int y, int vx, int vy, int angle, int av, int width, int height, int mass, int color);
+        void create(int x, int y, int vx, int vy, int angle, int av, int width, int height, int mass, int color);
         void render(int dt, int rendererX, int rendererY, int rendererWidth, int rendererHeight);
         void computeStep(int dt);
         void computeForceAndTorque();
+        void remove();
 };
 
 // Calculates the inertia of a box shape and stores it in the momentOfInertia variable.
@@ -68,8 +69,8 @@ void RigidBody::render(int dt, int rendererX, int rendererY, int rendererWidth, 
 }
 
 // Create a rigidbody given a position, velocity, angle, angular velocity, and shape.
-void RigidBody::createRigidBody(int x, int y, int vx, int vy, int angle, int av, int width, int height, int mass, int color) {
-    this->create(x, y, color, 2);
+void RigidBody::create(int x, int y, int vx, int vy, int angle, int av, int width, int height, int mass, int color) {
+    this->createEnt(x, y, color, 2);
     this->x = x;
     this->y = y;
     this->linearVelocity = Vector2{vx, vy};
@@ -108,4 +109,11 @@ void RigidBody::computeStep(int dt) {
     if (this->angle > 360) {
         this->angle -= 360;
     }
+}
+
+
+void RigidBody::remove() {
+	this->hasUpdate = true;
+	// this->tileChecks(); // tba
+    this->removeEnt();
 }
