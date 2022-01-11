@@ -14,6 +14,8 @@ class Circle: public Entity {
         int radius;
         void createCircle(int x, int y, int radius, int color);
         void render(int rendererX, int rendererY, int rendererWidth, int rendererHeight);
+		void tileChecks();
+		void removeWithTiles();
 };
 
 // Create a circle given a position, radius, and color.
@@ -26,6 +28,7 @@ void Circle::createCircle(int x, int y, int radius, int color) {
 }
 
 void Circle::render(int rendererX, int rendererY, int rendererWidth, int rendererHeight) {
+	if (!this->hasUpdate) return;
     for (int32_t dx = -this->radius; dx < this->radius; ++dx) {
 		for (int32_t dy = -this->radius; dy < this->radius; ++dy) {
 			if (dx * dx + dy * dy < this->radius * this->radius) {
@@ -38,19 +41,32 @@ void Circle::render(int rendererX, int rendererY, int rendererWidth, int rendere
 			}
 		}
 	}
+
+	this->hasUpdate = false;
 }
 
-// void Circle::render(int x0, int y0, int radius, int color) {
-//     for (int32_t dx = -radius; dx < radius; ++dx) {
-// 		for (int32_t dy = -radius; dy < radius; ++dy) {
-// 			if (dx * dx + dy * dy < radius * radius) {
-// 				int32_t x = x0 + dx;
-// 				int32_t y = y0 + dy;
-// 				if (x < 0 || x > width || y < 0 || y > height) {
-// 					continue;
-// 				}
-// 				vram[(x) + (y) * width] = color;
-// 			}
-// 		}
-// 	}
-// }
+void Circle::tileChecks() {
+	
+	// Check for updating tiles
+    if (isTileManagerActive && this->hasUpdate) {
+        int tileX = this->x / TILE_WIDTH;
+        int tileY = this->y / TILE_HEIGHT;
+        int tileWidth = this->radius / TILE_WIDTH + 1;
+        int tileHeight = this->radius / TILE_HEIGHT + 1;
+
+        for (int i = -tileWidth; i < tileWidth + 1; i++) {
+            for (int j = -tileHeight; j < tileHeight + 1; j++) {
+                tile_manager_pointer->RefreshTile(tileX + i, tileY + j);
+                // tile_manager_pointer->UpdateTile(tileX + i, tileY + j, 1);
+            }
+        }
+        
+    }
+
+}
+
+void Circle::removeWithTiles() {
+	this->hasUpdate = true;
+	this->tileChecks(); //tell the tiles in the circle to update after the circle is removed
+	this->remove();
+}

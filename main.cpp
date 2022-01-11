@@ -8,7 +8,7 @@
 #include "lib/core/debug.hpp"
 #include "lib/renderer.hpp"
 // #include "lib/3d/3d.cpp"
-// #include "lib/functions/random.hpp"
+#include "lib/functions/random.hpp"
 
 #ifndef PC
 	APP_NAME("HHK Game Engine")
@@ -20,13 +20,38 @@
 // Tracks the main game loop
 bool game_running = true;
 
+// RNG pointer
+RandomGenerator* rng;
+
 // Ends the game and is called by the event handler
 void endGame() {
 	game_running = false;
 }
 
+void tmp() {
+	if (typeCounter[3] == 0) {
+		int rx = rng->Generate(280) + 20;
+		int ry = rng->Generate(480) + 20;
+		int r = rng->Generate(255);
+		int g = rng->Generate(255);
+		int b = rng->Generate(255);
+		renderer_pointer->circles[typeCounter[3]].createCircle(rx,ry,30,color(r,g,b));
+	}
+}
+
+void rm() {
+	if (typeCounter[3] != 0) {
+		renderer_pointer->circles[0].removeWithTiles();
+	}
+}
+
 //The acutal main
 void main2() {
+
+	
+	RandomGenerator rngp;
+	rngp.SetSeed(8745968);
+	rng = &rngp;
 
 	/*
 	// 3D camera
@@ -48,8 +73,10 @@ void main2() {
 	uint32_t frame = 0;
 
 	Renderer renderer(0,0,320,528); // x,y,w,h
+	// set the pointer to the renderer
+	renderer_pointer = &renderer;
 
-	// renderer.rectangles[typeCounter[0]].createRectangle(50,50,100,52,color(255,20,80));
+	renderer.rectangles[typeCounter[0]].createRectangle(50,50,100,52,color(255,20,80));
 
 	// renderer.circles[typeCounter[3]].createCircle(80,80,210,color(255,0,40));
 	// renderer.circles[typeCounter[3]].createCircle(90,90,210,color(255,0,80));
@@ -59,11 +86,14 @@ void main2() {
 	// renderer.circles[typeCounter[3]].createCircle(130,130,210,color(255,0,255));
 	// renderer.circles[typeCounter[3]].createCircle(140,140,210,color(255,40,255));
 	// renderer.circles[typeCounter[3]].createCircle(150,150,210,color(255,80,255));
-	// renderer.circles[typeCounter[3]].createCircle(160,160,210,color(255,120,255));
+	// renderer.circles[typeCounter[3]].createCircle(160,160,40,color(255,120,255));
 
 	// Add event listeners
 	addListener(KEY_BACKSPACE, toggleDebug); // toggle debug mode
 	addListener(KEY_CLEAR, endGame); // end the game
+
+	addListener2(KEY_UP, tmp);
+	addListener2(KEY_DOWN, rm);
 
 	TileManager tileManager;
 	tileManager.Init();
@@ -78,6 +108,8 @@ void main2() {
 		frame++;
 		checkEvents();
 		
+		renderer.tileChecks();
+
 		tileManager.DrawTiles(0,0);
 
 		/*

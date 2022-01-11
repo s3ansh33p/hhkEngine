@@ -71,6 +71,17 @@ class Renderer {
         line(this->rendererX, this->rendererY + this->rendererHeight, this->rendererX + this->rendererWidth, this->rendererY + this->rendererHeight, color(255,255,0));
     };
 
+    // Tile Checking
+    void tileChecks() {
+        // will include all types eventually and put in a loop
+        for (int i = 0; i<typeCounter[0]; i++) {
+            this->rectangles[i].tileChecks();
+        }
+        for (int i = 0; i<typeCounter[3]; i++) {
+            this->circles[i].tileChecks();
+        }
+    }
+
     // Add a rectangle to the renderer
     void addRectangle(int x, int y, int width, int height, uint16_t color) {
         this->rectangles[typeCounter[0]].createRectangle(x, y, width, height, color);
@@ -97,4 +108,6 @@ class Renderer {
 
 };
 
+// pointer for the renderer that gets created later on
+Renderer *renderer_pointer = nullptr;
 

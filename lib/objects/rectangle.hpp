@@ -16,6 +16,8 @@ class Rectangle: public Entity {
         int height;
         void createRectangle(int x, int y, int width, int height, int color);
         void render(int rendererX, int rendererY, int rendererWidth, int rendererHeight);
+        void tileChecks();
+        void removeWithTiles();
 };
 
 // Create a rectangle given a position, dimensions, and color.
@@ -29,6 +31,7 @@ void Rectangle::createRectangle(int x, int y, int width, int height, int color) 
 }
 
 void Rectangle::render (int rendererX, int rendererY, int rendererWidth, int rendererHeight) {
+    if (!this->hasUpdate) return;
     bool renderLeft = true;
     bool renderRight = true;
     bool renderTop = true;
@@ -78,4 +81,58 @@ void Rectangle::render (int rendererX, int rendererY, int rendererWidth, int ren
         line(this->x, this->y + this->height, this->x + this->width, this->y + this->height, this->color);
     }
 
+    this->hasUpdate = false;
+
+}
+
+void Rectangle::tileChecks() {
+    
+    // Check for updating tiles
+    /*
+		50,50	150,50
+		|-----------|
+		|           |
+		|-----------|
+		50,102	150,102
+
+		Tiles are 16x16 pixels
+		20 x 33 tiles
+
+		X CALC
+		50 / 16 = 3.5
+		Tile Index 3 gets updated
+		100 / 16 = 6.25
+		The next 6 tiles get updated
+
+		Y CALC
+		50 / 16 + 1 = 4.5
+		Tile Index 4 gets updated
+		52 / 16 + 1 = 4.125
+		The next 4 tiles get updated
+
+		Tile updated
+		3,3 to 3,10
+		to
+		7,3 to 7,10
+	*/
+    if (isTileManagerActive && this->hasUpdate) {
+        int tileX = this->x / TILE_WIDTH;
+        int tileY = this->y / TILE_HEIGHT;
+        int tileWidth = this->width / TILE_WIDTH + 1;
+        int tileHeight = this->height / TILE_HEIGHT + 1;
+
+        for (int i = 0; i < tileWidth; i++) {
+            for (int j = 0; j < tileHeight; j++) {
+                // tile_manager_pointer->RefreshTile(tileX + i, tileY + j);
+                tile_manager_pointer->UpdateTile(tileX + i, tileY + j, 1);
+            }
+        }
+    }
+
+}
+
+void Rectangle::removeWithTiles() {
+	this->hasUpdate = true;
+	this->tileChecks();
+	this->remove();
 }

@@ -10,6 +10,9 @@
 
 #include "../../draw_functions.hpp"
 
+// determines if the TileManager is active
+bool isTileManagerActive = false;
+
 struct Tile
 {
     uint16_t *texture;
@@ -41,43 +44,51 @@ public:
     void Init();
     const Tile& GetTile(int x, int y);
     bool IsTileSolid(int x, int y);
+    void UpdateTile(int x, int y, int tileID);
+    void RefreshTile(int x, int y);
+    void BGTile(int x1, int y1, int w, int h, uint16_t color);
 };
+
+// pointer for the tile manager that gets created later on
+TileManager *tile_manager_pointer = nullptr;
+
 // 320 × 528
+
 void TileManager::Init() {
     int map[TILE_MAX] = {
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        2,2,2,1,1,2,1,1,1,1,2,2,2,1,1,2,1,1,1,1,
-        1,2,1,1,2,1,2,1,2,2,2,2,2,1,1,2,1,1,1,1,
-        1,2,1,1,2,1,2,1,2,2,2,2,2,1,1,2,1,1,1,1,
-        1,2,1,1,2,1,2,1,2,2,2,2,2,1,1,2,1,1,1,1,
-        1,2,1,1,2,1,2,1,2,2,2,2,2,1,1,2,1,1,1,1,
-        1,2,1,1,2,1,2,1,2,2,2,2,2,1,1,2,1,1,1,1,
-        1,2,1,1,2,1,2,1,2,2,2,2,2,1,1,2,1,1,1,1,
-        1,2,1,1,2,1,2,1,2,2,2,2,2,1,1,2,1,1,1,1,
-        1,2,1,1,2,1,2,1,2,2,2,2,2,1,1,2,1,1,1,1,
-        1,2,1,1,2,1,2,1,2,2,2,2,2,1,1,2,1,1,1,1,
-        1,2,1,1,2,1,2,1,2,2,2,2,2,1,1,2,1,1,1,1
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+        1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1
     };
     // set the map to myMap
     for (int i = 0; i < TILE_MAX; i++) {
@@ -119,21 +130,38 @@ void TileManager::DrawTiles(int x, int y)
         for (int tileX = 0; tileX < TILE_COUNT_X; tileX++)
         {
             int tileIndex = (tileY * TILE_COUNT_X) + tileX;
-            if (map[tileIndex].tileID != 0) {
-                if (map[tileIndex].hasUpdate) {
+            if (map[tileIndex].hasUpdate) {
+                if (map[tileIndex].tileID != 0) {
                     int drawX = (x + (tileX * TILE_WIDTH));
                     int drawY = (y + (tileY * TILE_HEIGHT));
                     // remder the tile sprite
                     DRAW_TEXTURE(tileset[map[tileIndex].tileID-1].texture, drawX, drawY);
-                    map[tileIndex].hasUpdate = false;
+                } else {
+                    this->BGTile(x + (tileX * TILE_WIDTH), y + (tileY * TILE_HEIGHT), TILE_WIDTH, TILE_HEIGHT, color(0, 0, 64));
                 }
+                map[tileIndex].hasUpdate = false;
             }
         }
     }
 }
 
-// determines if the TileManager is active
-bool isTileManagerActive = false;
+void TileManager::UpdateTile(int x, int y, int tileID) {
+    int tileIndex = (y * TILE_COUNT_X) + x;
+    map[tileIndex].tileID = tileID;
+    map[tileIndex].hasUpdate = true;
+}
 
-// pointer for the tile manager that gets created later on
-TileManager *tile_manager_pointer = nullptr;
+void TileManager::RefreshTile(int x, int y) {
+    int tileIndex = (y * TILE_COUNT_X) + x;
+    map[tileIndex].hasUpdate = true;
+}
+
+// draw a background colour for cells that need to be set back
+// e.g. Debug text is shown, then hidden, those cells need to be set back to the original colour
+void TileManager::BGTile(int x1, int y1, int w, int h, uint16_t color) {
+	for (int x=x1; x<x1+w; x++){
+		for (int y=y1; y<y1+h; y++){
+			setPixel(x,y, color);
+		}
+    }
+}

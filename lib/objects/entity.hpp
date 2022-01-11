@@ -2,8 +2,8 @@
  * @file entity.hpp
  * @author Sean McGinty (newfolderlocation@gmail.com)
  * @brief Generic entity class for the engine
- * @version 1.0
- * @date 2021-12-29
+ * @version 1.1
+ * @date 2021-01-11
  */
 
 #pragma once
@@ -21,6 +21,7 @@ public:
     int x;
     int y;
     int type;
+    bool hasUpdate;
     uint16_t color;
     void create(int x, int y, uint16_t color, int type);
     void remove();
@@ -42,6 +43,7 @@ void Entity::create(int x, int y, uint16_t color, int type) {
     this->y = y;
     this->color = color;
     this->type = type;
+    this->hasUpdate = true;
     this->id = entityIDCounter;
     typeCounter[type]++;
     entities[entityCount] = *this;
