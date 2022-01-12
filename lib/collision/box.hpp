@@ -1,5 +1,5 @@
 /**
- * @file box-circle.hpp
+ * @file box.hpp
  * @author David Figatner (https://github.com/davidfig)
  * @note Translated from JavaScript to C++
  * @brief Collision detection for the engine

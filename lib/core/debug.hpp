@@ -57,5 +57,8 @@ void toggleDebug() {
                 tile_manager_pointer->map[(i*TILE_COUNT_X) + j].hasUpdate = true;
             }
         }
+        if (renderer_pointer != nullptr) {
+            renderer_pointer->updateAll();
+        }
     }
 }

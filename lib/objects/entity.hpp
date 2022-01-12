@@ -10,7 +10,6 @@
 
 #include "../environment.hpp"
 #include "../../calc.hpp"
-#include "../collision/collisions.hpp"
 
 int entityCount = 0;
 int entityIDCounter = 0;
@@ -94,7 +93,7 @@ Entity* getEntitiesOfType(int type) {
 void removeEntitiesOfType(int type) {
     Entity* entitiesOfType = getEntitiesOfType(type);
     if (entitiesOfType[0].id != -1) {
-        for (int i = 0; i < typeCounter[type]; i++) {
+        for (int i = 0; i < typeCounter[type] + 1; i++) {
             entitiesOfType[i].remove();
         }
     }

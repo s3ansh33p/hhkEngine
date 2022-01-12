@@ -2,12 +2,11 @@
 
 #include "calc.hpp"
 #include "draw_functions.hpp"
+#include "lib/core/exceptions.hpp"
 #include "lib/core/event_handler.hpp"
-#include "lib/core/save.hpp"
 #include "lib/core/tile_handler.hpp"
-#include "lib/core/debug.hpp"
 #include "lib/renderer.hpp"
-// #include "lib/3d/3d.cpp"
+#include "lib/core/debug.hpp"
 #include "lib/functions/random.hpp"
 
 #ifndef PC
@@ -30,16 +29,31 @@ void endGame() {
 
 void tmp() {
 	if (typeCounter[3] == 0) {
-		int rx = rng->Generate(280) + 20;
-		int ry = rng->Generate(480) + 20;
-		int r = rng->Generate(255);
-		renderer_pointer->addCircle(rx,ry,30,color(r,67,49));
+		int rx = 0;
+		int ry = 0;
+		for (int i = 0; i < 9; i++) {
+			rx = 28;
+			ry = 32;
+			renderer_pointer->addCircle(rx,ry,30,color(0,255,255));
+		}
+
+		// renderer_pointer->checkCollisions();
 	}
+	try {
+        Debug_Printf(1,20,true,0,"1");
+        throw();
+		Debug_Printf(1,21,true,0,"2");
+    } catch {
+		Debug_Printf(1,22,true,0,"ERROR");
+    }
 }
 
 void rm() {
 	if (typeCounter[3] != 0) {
-		renderer_pointer->circles[0].remove();
+		renderer_pointer->checkCollisions();
+		for (int i = 0; i < 9; i++) {
+			renderer_pointer->circles[i].remove();
+		}
 	}
 }
 
