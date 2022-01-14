@@ -33,14 +33,17 @@ void endGame() {
 
 // left
 void left() {
-	player_pointer->direction = 1;
-	player_pointer->cycleState = 1;
+	player_pointer->moveLeft();
 }
 
 // right
 void right() {
-	player_pointer->direction = 0;
-	player_pointer->cycleState = 0;
+	player_pointer->moveRight();
+}
+
+// jump
+void jump() {
+	player_pointer->moveJump();
 }
 
 //The acutal main
@@ -70,8 +73,9 @@ void main2() {
 	addListener(KEY_BACKSPACE, toggleDebug); // toggle debug mode
 	addListener(KEY_CLEAR, endGame); // end the game
 
-	addListener(KEY_LEFT, left); // left
-	addListener(KEY_RIGHT, right); // right
+	addListener(KEY_LEFT, left, true); // left
+	addListener(KEY_RIGHT, right, true); // right
+	addListener2(KEY_UP, jump, true); // jump
 
 	TileManager tileManager;
 	tileManager.Init();
@@ -90,7 +94,7 @@ void main2() {
 		
 		renderer.tileChecks();
 
-		player.checkTiles();
+		player.calculateAnimationFrame();
 		tileManager.DrawTiles(0,0);
 		player.animate();
 
