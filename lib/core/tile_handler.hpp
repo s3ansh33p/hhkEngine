@@ -25,12 +25,17 @@ struct Cell
     bool hasUpdate;
 };
 
+const Tile emptyTile = {
+    nullptr,
+    false
+};
+
 // Tiles must be 16x16 pixels.
 const int TILE_WIDTH = 16;
 const int TILE_HEIGHT = 16;
 
 const int TILE_COUNT_X = 20;
-const int TILE_COUNT_Y = 12;
+const int TILE_COUNT_Y = 14;
 
 const int TILE_MAX = TILE_COUNT_X * TILE_COUNT_Y;
 
@@ -62,13 +67,15 @@ void TileManager::Init() {
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
         0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
         0,0,1,2,2,2,2,2,2,2,2,2,2,2,3,0,0,0,0,0,
         0,0,4,5,5,5,5,5,5,5,5,5,5,5,6,0,0,0,0,0,
         0,0,7,8,8,8,8,8,8,8,8,8,8,8,9,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,5,6,0,
+        0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,8,9,0,
+        1,2,2,3,0,0,0,1,2,3,0,0,0,0,1,3,0,0,0,0,
+        7,8,8,9,0,0,0,7,8,9,0,0,0,0,7,9,0,0,0,0
     };
     // set the map to myMap
     for (int i = 0; i < TILE_MAX; i++) {
@@ -109,7 +116,11 @@ void TileManager::Init() {
 }
 
 const Tile& TileManager::GetTile(int x, int y) {
-    return this->tileset[ this->map[ (y*TILE_COUNT_Y) + x ].tileID ];
+    if (this->map[ (y*TILE_COUNT_X) + x].tileID != 0) {
+        return this->tileset[this->map[ (y*TILE_COUNT_X) + x].tileID - 1];
+    } else {
+        return emptyTile;
+    }
 }
 
 bool TileManager::IsTileSolid(int x, int y) {
